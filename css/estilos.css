@@ -745,7 +745,7 @@ p { margin: 0; }
 /* ---------- 13. RESPONSIVE ---------- */
 /* Tabletas */
 @media (max-width: 960px) {
-  .hero__grid { grid-template-columns: 1fr; gap: 32px; } // 
+  .hero__grid { grid-template-columns: 1fr; gap: 32px; }
   .hero__datos { margin-left: 0; }
   .explorar__grid,
   .recursos__grid { grid-template-columns: repeat(2, 1fr); }
