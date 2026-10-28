@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Preguntas frecuentes: compromisos académicos UM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#16313D; --muted:#566771; --line:#D5DEE0; --soft:#E8EEEF;
+  --c1:#16313D; --c2:#B4462F; --c3:#566771; --c4:#0F7C82; --c5:#C98A0B; --c6:#2C6A9E; --c7:#2F7F4F;
+  --focus:#2C6A9E; --mark:#F5D98A;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+    --c1:#E6EEF0; --c2:#E58A72; --c3:#9DB0B8; --c4:#5CC3C8; --c5:#E8B33C; --c6:#6FA9DA; --c7:#6CC08D;
+    --focus:#6FA9DA; --mark:#6B5418;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+  --c1:#E6EEF0; --c2:#E58A72; --c3:#9DB0B8; --c4:#5CC3C8; --c5:#E8B33C; --c6:#6FA9DA; --c7:#6CC08D;
+  --focus:#6FA9DA; --mark:#6B5418;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 9rem)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding:2.25rem 1.25rem 4rem}
+h1{font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.25rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 .75rem;max-width:15ch}
+.intro{color:var(--muted);max-width:60ch;margin:0 0 1.75rem}
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:.75rem 0 .9rem;border-bottom:1px solid var(--line)}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.search{flex:1 1 260px}
+.search input{width:100%;font:inherit;font-size:1.05rem;padding:.75rem 1rem;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--focus)}
+.tool{font:inherit;font-size:.95rem;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:.65rem 1rem;cursor:pointer}
+.chips{margin-top:.75rem;display:flex;gap:.45rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:thin}
+.chip{flex:0 0 auto;font:inherit;font-size:.88rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer;white-space:nowrap}
+.chip[aria-current="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1.5px var(--c);font-weight:700}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.status{color:var(--muted);font-size:.9rem;margin:1rem 0 0;min-height:1.4em}
+section{margin-top:2.25rem}
+section h2{font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-weight:700;font-size:1.45rem;line-height:1.2;margin:0 0 .5rem;display:flex;gap:.7rem;align-items:baseline}
+section h2 .num{color:var(--c);font-weight:900}
+section h2 .qn{font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-weight:400;font-size:.85rem;color:var(--muted);margin-left:auto}
+.item{border-top:1px solid var(--line)}
+.item:last-child{border-bottom:1px solid var(--line)}
+.q{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:1fr 1.75rem;gap:1rem;align-items:center;padding:1rem .5rem 1rem 1rem;cursor:pointer;font-weight:700;font-size:1.04rem;line-height:1.35;border-left:4px solid transparent}
+.q:hover{background:var(--soft)}
+.q:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+.item.open .q{border-left-color:var(--c)}
+.icon{width:1.75rem;height:1.75rem;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--muted);transition:transform .2s}
+.item.open .icon{transform:rotate(45deg);border-color:var(--c);color:var(--c)}
+.a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
+.item.open .a{grid-template-rows:1fr}
+.a > div{overflow:hidden}
+.a .inner{padding:.1rem 1rem 1.25rem 1.25rem;border-left:4px solid var(--c);max-width:68ch}
+.a p{margin:0 0 .7rem}
+.a p:last-child{margin-bottom:0}
+.a ul{margin:.2rem 0 .7rem;padding-left:1.2rem}
+.a li{margin-bottom:.3rem}
+.tbl{overflow-x:auto;margin:.4rem 0 .8rem}
+table{border-collapse:collapse;font-size:.92rem;min-width:100%}
+th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--soft);font-weight:700}
+.copy{font:inherit;font-size:.82rem;color:var(--muted);background:none;border:0;padding:0;margin-top:.75rem;cursor:pointer;text-decoration:underline}
+mark{background:var(--mark);color:inherit;border-radius:2px}
+.empty{padding:2rem 0;color:var(--muted)}
+.empty button{font:inherit;color:var(--focus);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+.foot{margin-top:2.5rem;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.a,.icon{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Preguntas frecuentes</h1>
+  <p class="intro">Respuestas sobre los compromisos académicos de la Universidad de Manizales: qué son, cómo se leen, cómo se concertan y cómo se reconoce cada actividad. Toca una pregunta para ver la respuesta o busca por palabra clave.</p>
+
+  <div class="controls">
+    <div class="row">
+      <div class="search">
+        <label for="q" style="position:absolute;left:-9999px">Buscar en las preguntas</label>
+        <input id="q" type="search" placeholder="Busca, por ejemplo: bonificación, asincrónica, tesis" autocomplete="off">
+      </div>
+      <button class="tool" id="toggleAll">Abrir todas</button>
+    </div>
+    <nav class="chips" id="chips" aria-label="Secciones"></nav>
+  </div>
+
+  <p class="status" id="status" aria-live="polite"></p>
+  <div id="faq"></div>
+
+</div>
+
+<script>
+const tbl=(h,r)=>`<div class="tbl"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${r.map(row=>`<tr>${row.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+const ul=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+
+const S=[
+{id:"s1",t:"Los compromisos académicos",c:"--c1",b:"🧭",bn:"Brújula",q:[
+ ["¿Qué son los compromisos académicos?",`<p>Es la herramienta con la que la Universidad y sus profesores planean, organizan y reconocen las actividades y responsabilidades de la labor profesoral durante un periodo académico. Hace visible cómo participa cada profesor en docencia, investigación, proyección social y gestión académica.</p><p>El Estatuto de los Académicos (2024) incluye los compromisos académicos entre los aspectos que regula (artículo 5) y señala que la jornada de trabajo se organiza con base en ellos (artículo 11, parágrafo 2).</p>`],
+ ["¿Los compromisos académicos son lo mismo que el horario de clases del profesor?",`<p>No. Son una planeación de toda la labor del periodo, no solo un horario. Reconocen también el tiempo de actividades que muchas veces no se ven, como preparar, evaluar, asesorar, investigar y participar en la vida académica.</p>`],
+ ["¿Es un registro de horas trabajadas?",`<p>No. Es la forma en que la Universidad reconoce y reserva el tiempo del profesor para cada una de sus funciones durante el periodo. Tampoco es una simple sumatoria de horas: es un acuerdo que articula las responsabilidades del profesor con las necesidades del programa y la facultad.</p>`],
+ ["¿Por qué se construye un compromiso nuevo cada periodo?",`<p>Porque la vida académica cambia de un periodo a otro: las asignaturas ofertadas, los grupos, el número de estudiantes, los trabajos de grado, los proyectos y las necesidades de cada programa. El compromiso recoge esa realidad de forma coherente con los planes de estudio de los programas.</p>`],
+ ["¿El compromiso se le asigna al profesor o se concerta?",`<p>Se concerta. El Estatuto reconoce el derecho del profesor a participar en la concertación de sus compromisos (artículo 33, literal d) y su responsabilidad de desarrollar las labores concertadas (artículo 34, literal b). Los interlocutores naturales de esa conversación son la dirección de programa o la decanatura.</p>`],
+ ["¿Quiénes participan en la construcción del compromiso?",`<p>Se construye en corresponsabilidad. La dirección de programa o la decanatura concertan las actividades. Las direcciones de Docencia, Investigaciones y Posgrados y Proyección Social, el Instituto Pedagógico y el Cedum orientan y acompañan en su ámbito. Cada profesor aporta su conocimiento de lo que hace, su planeación y sus evidencias.</p>`],
+ ["¿Cuáles son las cuatro dimensiones de la labor profesoral?",ul(["<strong>Docencia:</strong> acciones pedagógicas y didácticas que fortalecen los procesos formativos.","<strong>Investigación:</strong> actividades científicas, tecnológicas, de innovación y de investigación-creación.","<strong>Proyección social:</strong> acciones con el sector externo orientadas al desarrollo humano, social, económico, cultural y político.","<strong>Gestión académica:</strong> procesos de calidad, autoevaluación, representación, coordinación o dirección que crean las condiciones para las demás."])+`<p>No son compartimentos separados: un mismo profesor puede articularlas en su labor del periodo.</p>`]
+],ch:[
+ ["Según el Estatuto, ¿con base en qué se organiza la jornada de trabajo del profesor?",["En el horario de la sede","En los compromisos académicos","En la evaluación docente","En el número de estudiantes"],1,"El artículo 11, parágrafo 2, señala que la jornada se organiza con base en los compromisos académicos."],
+ ["¿Cómo se define el compromiso de un profesor?",["Se le asigna sin consulta","Lo define él solo","Se concerta con la dirección de programa o la decanatura","Lo define Talento Humano"],2,"Se concerta: es un derecho del profesor (art. 33, literal d)."],
+ ["¿Cuál de estas afirmaciones es correcta?",["El compromiso es el horario de clases","El compromiso es una sumatoria de horas","El compromiso planea toda la labor del periodo, incluidas actividades que no se ven","El compromiso se repite igual cada año"],2,"Reconoce también preparar, evaluar, asesorar, investigar y participar."]
+]},
+{id:"s2",t:"Dedicación y tipos de tiempo",c:"--c2",b:"⏱️",bn:"Reloj",q:[
+ ["¿Cuántas horas deben organizarse en los compromisos de un profesor?",`<p>Depende del tipo de vinculación (artículo 14 del Estatuto):</p>${tbl(["Vinculación","Horas semanales","Contacto directo"],[["Tiempo completo","40","18"],["Medio tiempo","20","12"],["Cátedra","Entre 6 y 16","Según los procesos misionales asignados"]])}<p>El tiempo restante se dedica a preparación de clases, asesorías, acompañamiento a estudiantes, capacitación, evaluación de proyectos, autoevaluación y gestión curricular.</p>`],
+ ["¿Qué es el contacto directo?",`<p>Es el tiempo de interacción o acompañamiento directo del profesor en cualquiera de las funciones misionales. No es solo la clase: también puede ser la asesoría de un trabajo de grado de posgrado o la coordinación de una línea de investigación, cuando así lo establecen las orientaciones.</p>`],
+ ["¿Qué es el contacto indirecto-complementario?",`<p>Es el tiempo dedicado a la gestión académica y curricular y a otras actividades que aportan a las funciones misionales y completan la dedicación del profesor. Ambos tiempos son igualmente valiosos: la diferencia está en la naturaleza de la actividad, no en su importancia.</p>`],
+ ["¿Qué significa la sigla HCD?",`<p><strong>HCD</strong> son las horas semanales de contacto directo; por ejemplo, la clase con un grupo o la asesoría de una tesis doctoral.</p>`],
+ ["¿Qué significa la sigla HCC?",`<p><strong>HCC</strong> son las horas semanales complementarias al contacto; por ejemplo, la planeación y preparación de clase, la evaluación y seguimiento o la formación docente.</p>`],
+ ["¿Cómo se convierten las horas semestrales en horas semanales?",`<p>Se dividen entre 16, que son las semanas del periodo académico. Por ejemplo, 32 horas semestrales de formación docente equivalen a 2 horas semanales (HCC).</p>`],
+ ["¿Qué son las horas de bonificación?",`<p>Son una forma de reconocimiento de actividades específicas que se registra por fuera de las horas de dedicación contractual. Hacen visible esa contribución, pero no forman parte de la dedicación. Son reconocimientos ocasionales según las necesidades que surjan en el periodo.</p>`],
+ ["¿Cómo se suman dedicación y bonificación?",`<p>El total es la suma de ambas. Por ejemplo, un profesor de tiempo completo con 40 horas de dedicación y 6 de bonificación verá un total de 46 horas semanales.</p>`]
+],ch:[
+ ["¿Cuántas horas semanales de contacto directo tiene un profesor de tiempo completo?",["12","16","18","40"],2,"Tiempo completo: 40 horas semanales, de las cuales 18 son de contacto directo."],
+ ["¿A cuántas horas semanales equivalen 32 horas semestrales?",["1","2","4","16"],1,"Se divide entre 16 semanas: 32 ÷ 16 = 2 horas semanales."],
+ ["Un profesor de tiempo completo tiene 6 horas de bonificación. ¿Qué verá en el reporte?",["Dedicación de 46 horas","Total de 46 horas, con dedicación de 40","Total de 40 horas","Dedicación de 34 horas"],1,"La bonificación no forma parte de la dedicación: 40 + 6 = 46 horas en total."]
+]},
+{id:"s3",t:"Cómo leer el reporte",c:"--c3",b:"🔎",bn:"Lupa",q:[
+ ["¿Cómo está organizado el reporte?",`<p>Va de lo general a lo particular: identificación y dedicación del profesor, distribución del tiempo entre los procesos misionales, actividades específicas de cada proceso y, al final, el plan de mejora y mantenimiento derivado de la evaluación docente.</p>`],
+ ["¿Qué información aparece en el encabezado?",`<p>El nombre del profesor, el periodo (por ejemplo, 2026-2), el tipo de contrato, la dedicación y la categoría en el escalafón (Instructor Asistente, Instructor Asociado, Profesor Asistente, Profesor Asociado o Profesor Titular). Cuando aplica, también muestra la clasificación como investigador ante Minciencias.</p>`],
+ ["¿Qué significan los cuatro indicadores generales?",ul(["<strong>Dedicación:</strong> tiempo semanal reconocido; debe coincidir con la vinculación (40, 20 o entre 6 y 16 horas).","<strong>Bonificación:</strong> tiempo de actividades reconocidas por fuera de la dedicación.","<strong>Total:</strong> suma de las dos anteriores.","<strong>Horas no aprobadas:</strong> tiempo de actividades registradas que aún no cuentan con aprobación."])],
+ ["¿Qué muestran las barras de distribución?",`<p>El porcentaje y las horas semanales que se dedican a cada proceso misional, una barra para la dedicación y otra para la bonificación. Por ejemplo, 25 horas de docencia en un tiempo completo aparecen como 62,50 %, porque 25 es el 62,5 % de 40.</p>`],
+ ["¿Para qué sirve el resumen gráfico del periodo?",`<p>Muestra cuándo ocurre cada actividad, con sus fechas de inicio y cierre. Ayuda a anticipar semanas con mayor carga, como encuentros concentrados de posgrado que coinciden con clases regulares o momentos de mayor evaluación.</p>`],
+ ["¿Qué significan las siglas del reporte?",tbl(["Sigla","Significado"],[["HCD","Horas semanales de contacto directo"],["HCC","Horas semanales complementarias al contacto"],["SEM","Semestre del plan de estudios"],["CRE","Créditos"],["CD","Contacto directo"],["TI","Trabajo independiente"],["MOD","Modalidad"]])],
+ ["¿Cómo se verifica que el compromiso cumpla con el Estatuto?",`<p>La plataforma compara el compromiso con los parámetros del Estatuto: la dedicación frente al tiempo vinculado (por ejemplo, 40 de 40 horas) y las horas de contacto directo frente a las previstas (por ejemplo, 18 de 18 en tiempo completo).</p>`],
+ ["¿Cómo recibe y acepta el profesor su compromiso?",`<p>Una vez concertado, se envía por correo institucional. La plataforma registra el envío, las consultas y la aceptación. Aceptar significa reconocer en el compromiso las actividades concertadas para el periodo.</p>`],
+ ["¿Qué debe hacer el profesor si algo no corresponde con lo acordado?",`<p>El profesor debe revisarlo con calma antes de aceptarlo y conversar la diferencia con la dirección del programa.</p>`],
+ ["¿El compromiso puede cambiar durante el periodo?",`<p>Sí. Puede ajustarse por las dinámicas del programa; por ejemplo, un grupo que no se abre por falta de estudiantes o estudiantes de posgrado que no se matriculan. El ajuste se concerta entre el profesor y la dirección de programa o la decanatura.</p>`],
+ ["¿Qué significa la etiqueta “Sujeta a estudiantes matriculados”?",`<p>Que el reconocimiento de esa actividad depende de que los estudiantes estén efectivamente matriculados. Es frecuente en la asesoría de trabajos de grado y tesis de posgrado: si el estudiante no se matricula, esas horas no se reconocen.</p>`]
+],ch:[
+ ["En un tiempo completo, ¿cómo aparecen 25 horas semanales de docencia en la barra de distribución?",["25 %","40 %","62,50 %","75 %"],2,"25 es el 62,5 % de 40 horas."],
+ ["¿Qué indica la etiqueta “Sujeta a estudiantes matriculados”?",["Que la actividad es opcional","Que las horas solo se reconocen si los estudiantes se matriculan","Que el curso es virtual","Que la actividad ya fue aprobada"],1,"Si el estudiante no se matricula, esas horas no se reconocen."],
+ ["Un profesor nota que una actividad no corresponde con lo acordado. ¿Qué debe hacer?",["Aceptar y esperar el siguiente periodo","Modificar el reporte por su cuenta","Revisarlo con calma y conversar la diferencia con la dirección del programa antes de aceptar","Ignorar el correo"],2,"Aceptar significa reconocer lo concertado; las diferencias se conversan antes."]
+]},
+{id:"s4",t:"Evaluación docente y plan de mejora",c:"--c4",b:"⚖️",bn:"Balanza",q:[
+ ["¿Por qué aparece la evaluación docente en el compromiso?",`<p>Porque compromiso y evaluación forman un mismo ciclo: planear, desarrollar, evidenciar y mejorar. El reporte permite consultar la evaluación docente del periodo inmediatamente anterior.</p>`],
+ ["¿Cómo se compone la evaluación docente?",`<p>Integra tres miradas, de las que resulta un promedio final:</p>${tbl(["Fuente","Peso"],[["Estudiantes","50 %"],["Jefe inmediato","25 %"],["Autoevaluación","25 %"]])}<p>La plataforma muestra además los resultados de los estudiantes en las dimensiones del ser, el saber y el hacer, y el detalle por asignatura y grupo.</p>`],
+ ["¿Qué es la lectura cualitativa de la evaluación?",`<p>Es una síntesis construida a partir de los comentarios abiertos de los estudiantes: lo que valoran, lo que cuestionan, el tono general y lo que piden mejorar. Complementa los resultados numéricos, no los reemplaza. La plataforma advierte cuando hay pocas respuestas para interpretar con prudencia. Este apartado está en revisión con Tecnologías de la Información.</p>`],
+ ["¿Qué enfoque tiene la evaluación?",`<p>El Estatuto la concibe como sistemática, diferencial, dimensional y, sobre todo, formativa (artículo 28). Busca reconocer fortalezas, identificar oportunidades de mejora y orientar el acompañamiento. El profesor tiene derecho a conocer oportunamente sus resultados y a recibir acompañamiento.</p>`],
+ ["¿Qué es el plan de mejora y mantenimiento?",`<p>Es el plan que cada profesor formula a partir de su evaluación. Registra el resultado actual y el esperado por fuente y, para las dimensiones del saber, el hacer y el ser, define un objetivo, acciones concretas y una evidencia o indicador; por ejemplo, un syllabus actualizado o un horario de asesoría publicado.</p>`],
+ ["¿Cuál es la diferencia entre mantenimiento y mejora?",`<p>El plan de mantenimiento busca consolidar una fortaleza. El plan de mejora busca fortalecer un aspecto de la práctica. Se indica en las observaciones del plan.</p>`],
+ ["¿Quién construye y acompaña el plan?",`<p>Lo construye cada profesor y el jefe inmediato lo retroalimenta y acompaña su seguimiento (artículo 28, parágrafo 3). La Dirección de Docencia y el Instituto Pedagógico ofrecen apoyo según las necesidades identificadas.</p>`],
+ ["¿Cómo se hace seguimiento al plan?",`<p>El plan incluye una fecha de presentación del avance y un espacio para registrar logros, evidencias y porcentaje de cumplimiento.</p>`],
+ ["¿Puede el profesor usar las sugerencias de redacción de la plataforma?",`<p>Sí, como apoyo. Siempre deben ser revisadas y ajustadas por cada profesor.</p>`]
+],ch:[
+ ["¿Qué peso tiene la evaluación de los estudiantes en el promedio final?",["25 %","33 %","50 %","75 %"],2,"Estudiantes 50 %, jefe inmediato 25 % y autoevaluación 25 %."],
+ ["¿Qué busca un plan de mantenimiento?",["Corregir un error grave","Consolidar una fortaleza","Sancionar al profesor","Reemplazar la evaluación"],1,"El mantenimiento consolida una fortaleza; la mejora fortalece un aspecto de la práctica."],
+ ["¿Quién construye el plan de mejora y mantenimiento?",["El jefe inmediato","Los estudiantes","Cada profesor, con retroalimentación del jefe inmediato","La Dirección de Docencia"],2,"Lo construye el profesor y el jefe inmediato lo retroalimenta y acompaña (art. 28, par. 3)."]
+]},
+{id:"s5",t:"Docencia: presencialidad y virtualidad",c:"--c5",b:"📚",bn:"Libro",q:[
+ ["¿Qué es un crédito académico?",`<p>Es la unidad que mide el trabajo académico del estudiante y equivale a 48 horas. Incluye las horas con acompañamiento directo del profesor y las de trabajo independiente (Decreto 1330 de 2019; Acuerdo 01 de 2009).</p>`],
+ ["¿Qué relaciones existen entre acompañamiento directo y trabajo independiente?",tbl(["Programas","Relación","Horas por crédito"],[["Pregrados presenciales","1 a 2","16 de acompañamiento directo y 32 de trabajo independiente"],["Pregrados presenciales","2 a 1","32 de acompañamiento directo y 16 de trabajo independiente"],["Pregrados virtuales y posgrados","1 a 3","12 de acompañamiento directo y 36 de trabajo independiente"],["Pregrados virtuales y posgrados","3 a 1","36 de acompañamiento directo y 12 de trabajo independiente"]])+`<p>Existen otras relaciones según la naturaleza de las asignaturas. La referencia siempre es el plan de estudios aprobado del programa.</p>`],
+ ["¿Cómo calcula el sistema las horas de docencia del profesor?",`<p>Toma del plan de estudios los créditos, su relación, la naturaleza del curso (teórico, teórico-práctico o práctico) y su modalidad. Con ellos calcula automáticamente las horas de contacto directo y las de preparación, seguimiento y evaluación.</p>`],
+ ["¿La responsabilidad del profesor termina al salir de clase?",`<p>No. Abarca la totalidad de las horas del crédito. En el trabajo independiente el profesor no interviene en tiempo real, pero es quien lo diseña, orienta, acompaña y evalúa. El Estatuto incluye este acompañamiento entre los deberes de los académicos, con excepción de los catedráticos según la naturaleza de sus compromisos (artículo 34, literal f).</p>`],
+ ["¿Qué papel cumple el syllabus?",`<p>En él se articulan el contacto directo y el trabajo independiente: qué se trabajará en los encuentros, qué hará el estudiante de forma autónoma, con qué propósito y recursos, y cómo se hará seguimiento y evaluación. La planeación de clase debe quedar consignada allí.</p>`],
+ ["¿Qué componentes de la docencia reconoce el compromiso?",ul(["<strong>Docencia directa:</strong> actividades formativas en contacto directo (HCD).","<strong>Planeación y preparación de clase:</strong> organización de actividades presenciales, virtuales, de trabajo independiente y de interacción.","<strong>Evaluación y seguimiento:</strong> por ejemplo, diseñar una rúbrica, calificar y retroalimentar.","<strong>Asesoría del trabajo autónomo, pre-prácticas y prácticas:</strong> según el rol definido.","<strong>Gestión curricular:</strong> participación en desarrollos curriculares y evaluación de programas (HCC).","<strong>Formación docente:</strong> mínimo 32 horas semestrales, es decir, 2 horas semanales (HCC)."])],
+ ["¿El tiempo de preparación y evaluación es igual para todos los cursos?",`<p>No. Depende del número de estudiantes, el nivel de formación, la naturaleza del curso y su preparación. La dirección de programa puede complementar el tiempo reconocido; conviene revisarlo al concertar el compromiso.</p>`],
+ ["¿Para qué sirve el dato de estudiantes proyectados?",`<p>Indica cuántos estudiantes se prevé atender en cada grupo. Permite anticipar el tiempo de preparación, evaluación y seguimiento y, si es necesario, complementarlo. Como es una proyección, puede variar al cerrar matrículas.</p>`],
+ ["¿Qué diferencia hay entre horario regular e irregular?",`<p>El horario regular es semanal durante las 16 o 19 semanas del periodo; por ejemplo, todos los martes de 7:00 a 9:00. El irregular es modular o concentrado en fechas específicas; por ejemplo, tres sábados de 8:00 a 11:00. En ambos casos el reporte expresa el tiempo en horas semanales.</p>`],
+ ["¿Qué cuenta como contacto directo en la modalidad virtual?",`<p>Tanto las horas sincrónicas como las asincrónicas de interacción en plataforma, que en la virtualidad se llaman horas de interacción académica (HIA). Ambas suman a la columna HCD.</p>`],
+ ["¿Qué diferencia hay entre interacción sincrónica y asincrónica?",`<p>En la sincrónica, profesor y estudiantes coinciden en el mismo momento, como en una videoconferencia; los encuentros se graban. En la asincrónica interactúan sin coincidir en el tiempo: el profesor dinamiza foros, responde inquietudes, retroalimenta entregas y acompaña wikis o videoquices.</p>`],
+ ["¿La asincronía significa dejar actividades para que el estudiante las resuelva solo?",`<p>No. Asincronía no es ausencia. Es un tiempo de acompañamiento en el que el profesor dinamiza la discusión, responde dudas en los plazos acordados, retroalimenta con sentido formativo e identifica a tiempo a quienes necesitan apoyo.</p>`],
+ ["¿Cómo se distingue la interacción asincrónica del trabajo independiente?",tbl(["","Interacción asincrónica","Trabajo independiente"],[["Quién actúa","Profesor y estudiantes en diálogo diferido","El estudiante, de forma autónoma"],["Papel del profesor","Acompaña, orienta, responde, debate y retroalimenta","Diseña, da orientaciones, hace seguimiento y evalúa"],["Cómo se reconoce","Contacto directo (HCD)","Planeación, evaluación y seguimiento (HCC)"],["Evidencias","Participación en foros, respuestas oportunas, retroalimentaciones","Guía de actividades, recursos en plataforma, calificaciones"]])],
+ ["¿Cómo se ve el contacto directo de una asignatura virtual en el reporte?",`<p>Como la suma de los encuentros sincrónicos y las horas de interacción asincrónica. Por ejemplo, un curso virtual de doctorado de 3 créditos tiene 24 horas de contacto directo: 9 sincrónicas (tres encuentros de 3 horas) y 15 asincrónicas. En la columna HCD se ve como 0,48 + 0,80 = 1,28 horas semanales.</p>`],
+ ["¿Y en un curso presencial?",`<p>El plan de estudios suele expresar las horas por semana. Por ejemplo, una práctica de 1 crédito con 2 horas de contacto directo y 1 de trabajo independiente por semana suma 48 horas en 16 semanas. Si el profesor orienta dos grupos, la columna HCD muestra 2 + 2 = 4 horas semanales.</p>`],
+ ["¿Dónde puede el profesor pedir apoyo pedagógico?",`<p>En el Instituto Pedagógico y el Centro de Educación a Distancia (Cedum). Orientan el diseño de clases, el syllabus, las actividades de trabajo independiente, la evaluación y retroalimentación y los ambientes de aprendizaje.</p>`]
+],ch:[
+ ["¿A cuántas horas de trabajo del estudiante equivale un crédito académico?",["16","32","48","64"],2,"Un crédito equivale a 48 horas entre acompañamiento directo y trabajo independiente."],
+ ["En un curso virtual, ¿cómo se reconoce la interacción asincrónica en plataforma?",["Como trabajo independiente","Como contacto directo (HCD)","Como bonificación","No se reconoce"],1,"Las horas sincrónicas y asincrónicas de interacción suman a la columna HCD."],
+ ["¿Dónde debe quedar consignada la planeación de clase?",["En el correo institucional","En el syllabus","En el plan de mejora","En el acta del consejo"],1,"El syllabus articula el contacto directo y el trabajo independiente."]
+]},
+{id:"s6",t:"Investigación",c:"--c6",b:"🔬",bn:"Microscopio",q:[
+ ["¿Cómo se reconocen las actividades de investigación?",`<p>Según su naturaleza: algunas como contacto directo, otras como tiempo complementario y otras mediante bonificación.</p>`],
+ ["¿Cuáles son las categorías de la investigación?",ul(["<strong>Investigación en sentido estricto:</strong> generación de nuevo conocimiento, investigación-creación y desarrollo tecnológico. En convocatorias externas se reconoce mediante bonificación o contacto directo; en internas, según los términos de referencia.","<strong>Investigación formativa:</strong> competencias investigativas en pregrado mediante asistencias, semilleros, prácticas o pasantías y jóvenes investigadores.","<strong>Formación de alto nivel:</strong> asesoría de trabajos de grado y tesis en maestrías y doctorados.","<strong>Gestión de la investigación:</strong> coordinación, dirección de centros, liderazgo de grupos, coordinación de líneas, gestión editorial y comités."])],
+ ["¿Cuánto tiempo se reconoce por asesorar trabajos de grado, tesis y semilleros?",tbl(["Rol","Tiempo reconocido","Tipo","Número de trabajos"],[["Asesor de trabajo de grado en pregrado","1 hora semanal por proyecto","HCC","Se sugiere más de 5"],["Asesor en especialización","12 horas semestrales por proyecto (0,75 semanales)","HCD","Hasta 15"],["Asesor en maestría o especialización médico-quirúrgica","Hasta 16 horas semestrales por proyecto (hasta 1 semanal)","HCD","Hasta 10"],["Asesor de tesis de doctorado","Hasta 32 horas semestrales por proyecto (hasta 2 semanales)","HCD","Hasta 5"],["Coordinador de semillero","2 horas semanales","HCD","2 horas aunque coordine varios"]])],
+ ["¿Qué condiciones aplican a las asesorías de posgrado?",`<p>Los estudiantes deben estar matriculados y el proyecto aprobado en las líneas de investigación. El coordinador de investigaciones y posgrados de cada facultad verifica la matrícula durante el periodo y gestiona el ajuste si se requiere. Se espera que los asesores de maestría, doctorado y especializaciones médico-quirúrgicas estén clasificados ante Minciencias y tengan producción académica en los últimos cinco años.</p>`],
+ ["¿Qué pasa si un profesor supera el número de trabajos sugerido?",`<p>La dirección del programa debe dar el visto bueno. En maestría y doctorado, además, el profesor presenta avances semestrales del acompañamiento al Comité Central de Investigaciones y Posgrados, con visto bueno del decano.</p>`],
+ ["¿Qué condiciones tiene la coordinación de semilleros?",`<p>El semillero debe estar aprobado en la convocatoria vigente y solo se reconoce al profesor líder. Aplica también a catedráticos, sin superar los máximos del Estatuto.</p>`],
+ ["¿La asesoría de trabajos de grado de pregrado afecta el contacto directo del profesor?",`<p>No. Se reconoce como tiempo complementario y solo cuando el estudiante toma esa opción de grado según el reglamento estudiantil.</p>`],
+ ["¿Cuánto tiempo tiene un líder de grupo de investigación?",tbl(["Categoría del grupo","Total semestral","Equivalencia semanal"],[["A1 y A","160 horas","8 HCD + 2 HCC"],["B","112 horas","5 HCD + 2 HCC"],["C","80 horas","4 HCD + 1 HCC"],["Reconocido","32 horas","2 HCD"]])],
+ ["¿Cuánto tiempo tienen los demás roles de gestión de la investigación?",tbl(["Rol","Tiempo semanal","Rinde informe ante"],[["Coordinador de investigaciones y posgrados de facultad","10 HCD","Director de Investigaciones y Posgrados"],["Coordinador de línea de investigación","4 HCD + 1 HCC","Coordinador de investigaciones y posgrados de la facultad"],["Director de centro reconocido ante Minciencias","8 HCD + 2 HCC","Comité Central de Investigaciones y Posgrados"],["Director de centro no reconocido","3 HCD + 2 HCC","Comité Central de Investigaciones y Posgrados"],["Director de doctorado","18 HCD","Instancias del Acuerdo 006 de 2011"]])+`<p>Todos estos roles presentan un plan de trabajo y un informe semestral.</p>`],
+ ["¿Cómo se distribuyen las 18 horas asignadas a la dirección de un doctorado?",`<p>Entre la dirección y los seminarios o tesis, según el número de estudiantes:</p>`+tbl(["Estudiantes","Dirección (HCD)","Seminarios o tesis (HCD)"],[["Hasta 10","6","12"],["11 a 20","8","10"],["21 a 30","10","8"],["31 a 50","12","6"],["51 a 70","14","4"],["Más de 70","18","—"]])],
+ ["¿Cómo se reconoce la gestión editorial de revistas?",tbl(["Indexación","Editor","Editor asociado o asistente editorial"],[["Scopus o WoS","18 HCD + 2 HCC","10 HCD"],["Publindex (B y C)","10 HCD","8 HCD"],["Al menos dos SIRES o revista tipo D","8 HCD","5 HCD"]])+`<p>Los editores asumen, además, al menos un proceso de investigación formativa dentro de su tiempo complementario.</p>`],
+ ["¿Qué pasa si un profesor tiene varios roles de gestión de la investigación?",`<p>El contacto directo se reconoce por uno de ellos y los demás como tiempo complementario. Se exceptúan la edición de revistas y los procesos concertados con la Dirección de Investigaciones y Posgrados.</p>`],
+ ["¿Qué líneas de investigación se aprueban en los compromisos?",`<p>Solo las líneas armonizadas entre pregrado, posgrado y grupos de investigación.</p>`]
+],ch:[
+ ["¿Cuánto tiempo se reconoce, como máximo, por asesorar una tesis de doctorado?",["Hasta 1 hora semanal","Hasta 2 horas semanales","4 horas semanales","10 horas semanales"],1,"Hasta 32 horas semestrales por tesis (hasta 2 semanales), con un máximo sugerido de 5 tesis."],
+ ["¿Cómo se reconoce la asesoría de trabajos de grado de pregrado?",["Como contacto directo","Como tiempo complementario (HCC)","Como bonificación","No se reconoce"],1,"Es HCC y no afecta el contacto directo del profesor."],
+ ["Un profesor lidera tres semilleros aprobados. ¿Cuánto tiempo se le reconoce?",["2 horas semanales","6 horas semanales","1 hora por semillero","Nada"],0,"Se reconocen 2 horas semanales aunque coordine varios."]
+]},
+{id:"s7",t:"Proyección social y gestión académica",c:"--c7",b:"🌎",bn:"Mundo",q:[
+ ["¿Cómo se reconoce la proyección social en el compromiso?",`<p>Principalmente como tiempo complementario (HCC), con excepción de algunos roles de prácticas que tienen contacto directo.</p>`],
+ ["¿Cuáles son los componentes de la proyección social?",tbl(["Componente","Qué comprende","Tiempo"],[["Educación continuada","Diplomados, cursos, talleres, seminarios y eventos","HCC"],["Prácticas estudiantiles","Escenarios donde los estudiantes contrastan sus aprendizajes con los sectores productivos y sociales","Según el rol"],["Asesorías y consultorías","Transferencia del conocimiento en propuestas tecnológicas y de innovación","HCC"],["Proyectos de desarrollo social","Presencia efectiva en el entorno local, regional, nacional e internacional","HCC"]])],
+ ["¿Qué roles existen en las prácticas estudiantiles?",tbl(["Rol","Qué hace","Tiempo reconocido"],[["Coordinador de prácticas","Gestiona convenios, vinculación de estudiantes y seguimiento","Contacto directo según acuerdos del programa; referencia de 10 horas semanales"],["Docente asesor de prácticas","Acompaña, asesora, evalúa y retroalimenta al estudiante","12 horas semestrales de contacto directo por estudiante de pregrado"],["Docente tutor","Designado por el escenario de práctica para supervisar al estudiante","Lo define cada programa con la Dirección de Proyección Social"],["Coordinador de proyección social de facultad","Enlace entre la facultad y la Dirección de Proyección Social","6 horas semanales: 3 HCD + 3 HCC"]])],
+ ["¿Cuánto tiempo se le reconoce a un profesor que asesora la práctica de varios estudiantes?",`<p>12 horas semestrales por estudiante. Por ejemplo, asesorar a tres estudiantes de pregrado da 36 horas semestrales de contacto directo, es decir, 2,25 horas semanales. Si se requiere más tiempo, se concerta con la Dirección de Proyección Social.</p>`],
+ ["¿Cómo se justifican y siguen las horas de proyección social?",`<p>Se justifican ante la Dirección de Proyección Social según el número de estudiantes y las horas de práctica, en horas semestrales. Asesores y tutores mantienen un plan de acompañamiento y un reporte mensual de avance, que socializan con el coordinador de prácticas. Este informa en el comité de proyección social.</p>`],
+ ["¿Qué comprende la gestión académica?",tbl(["Categoría","Qué comprende","Tiempo"],[["Gestión de calidad","Autoevaluación, acreditación o renovación de registros calificados","HCC"],["Comisión","Coordinación, dirección o encargo administrativo por un tiempo determinado","Totalidad de la vinculación"],["Representaciones","Profesores elegidos en los consejos","Superior: 5 h; Académico: 3 h; Facultad: 2 h semanales"],["Permiso sindical","Junta directiva de ASPROFUM","3 HCD semanales por miembro; 5 para presidencia y tesorería"]])],
+ ["¿El profesor pierde su condición de académico si asume una comisión administrativa?",`<p>No. El Estatuto precisa que quien asume una comisión en cargos administrativos conserva su condición de académico y su ubicación en el escalafón, y puede regresar a sus labores académicas al terminarla (artículo 37).</p>`],
+ ["¿Cuál es la idea central que conecta todos los compromisos?",`<p>Detrás de cada línea del compromiso hay una contribución concreta a la formación, al conocimiento, a la sociedad y al proyecto colectivo de la Universidad. La invitación es a leerlo no solo desde el tiempo, sino desde su propósito: comprender para planear, planear para desarrollar y evidenciar para mejorar.</p>`]
+],ch:[
+ ["Un profesor asesora la práctica de tres estudiantes de pregrado. ¿Cuánto tiempo semanal se le reconoce?",["0,75 horas","2,25 horas","3 horas","12 horas"],1,"12 horas semestrales por estudiante: 36 ÷ 16 = 2,25 horas semanales de contacto directo."],
+ ["¿Cómo se reconoce principalmente la proyección social?",["Como bonificación","Como tiempo complementario (HCC)","Como contacto directo siempre","No se reconoce"],1,"Principalmente HCC, salvo algunos roles de prácticas con contacto directo."],
+ ["Un profesor asume una comisión administrativa. ¿Qué ocurre con su condición de académico?",["La pierde","La conserva, junto con su ubicación en el escalafón","Pasa a ser catedrático","Debe volver a concursar"],1,"Conserva su condición y puede regresar a sus labores académicas al terminar (art. 37)."]
+]}
+];
+
+const $ = s => document.querySelector(s);
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const strip = h => h.replace(/<[^>]+>/g," ");
+let query = "";
+
+function hlHTML(html){
+  if(!query) return html;
+  const q = norm(query);
+  return html.split(/(<[^>]+>)/).map(part => {
+    if(part.startsWith("<")) return part;
+    const n = norm(part); let out="", i=0, p;
+    while((p=n.indexOf(q,i))!==-1){ out += part.slice(i,p)+"<mark>"+part.slice(p,p+q.length)+"</mark>"; i=p+q.length; }
+    return out + part.slice(i);
+  }).join("");
+}
+
+function render(){
+  const q = norm(query); let total = 0;
+  const html = S.map((s,si) => {
+    const items = s.q.map((it,qi)=>({it,qi})).filter(({it}) => !q || norm(it[0]+" "+strip(it[1])).includes(q));
+    total += items.length;
+    if(!items.length) return "";
+    return `<section id="${s.id}" style="--c:var(${s.c})">
+      <h2><span class="num">${si+1}</span>${s.t}<span class="qn">${items.length} ${items.length===1?"pregunta":"preguntas"}</span></h2>
+      ${items.map(({it,qi}) => { const id=`${s.id}-${qi+1}`; return `
+      <div class="item${q?" open":""}" id="${id}">
+        <button class="q" aria-expanded="${!!q}" aria-controls="a-${id}"><span>${hlHTML(it[0])}</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="a" id="a-${id}" role="region"><div><div class="inner">${hlHTML(it[1])}<button class="copy" data-id="${id}">Copiar enlace a esta pregunta</button></div></div></div>
+      </div>`;}).join("")}
+    </section>`;
+  }).join("");
+  $("#faq").innerHTML = html || `<div class="empty">No hay preguntas que mencionen “${query.replace(/</g,"&lt;")}”. <button id="clr">Ver todas las preguntas</button></div>`;
+  const clr = $("#clr"); if(clr) clr.onclick = () => { $("#q").value=""; query=""; render(); };
+  $("#status").textContent = q ? (total===1?"1 pregunta encontrada":`${total} preguntas encontradas`) : `${S.reduce((a,s)=>a+s.q.length,0)} preguntas en ${S.length} temas`;
+  bind(); syncToggle();
+}
+
+function setOpen(item, open){
+  item.classList.toggle("open", open);
+  item.querySelector(".q").setAttribute("aria-expanded", open);
+}
+function bind(){
+  document.querySelectorAll(".item").forEach(it => {
+    it.querySelector(".q").onclick = () => { setOpen(it, !it.classList.contains("open")); syncToggle(); };
+  });
+  document.querySelectorAll(".copy").forEach(b => b.onclick = async () => {
+    const url = location.href.split("#")[0] + "#" + b.dataset.id;
+    try { await navigator.clipboard.writeText(url); b.textContent = "Enlace copiado"; }
+    catch(e){ b.textContent = "No se pudo copiar; usa la barra de direcciones"; history.replaceState(null,"","#"+b.dataset.id); }
+    setTimeout(()=> b.textContent = "Copiar enlace a esta pregunta", 2000);
+  });
+}
+function syncToggle(){
+  const all = [...document.querySelectorAll(".item")];
+  const allOpen = all.length && all.every(i => i.classList.contains("open"));
+  $("#toggleAll").textContent = allOpen ? "Cerrar todas" : "Abrir todas";
+}
+$("#toggleAll").onclick = () => {
+  const all = [...document.querySelectorAll(".item")];
+  const open = !all.every(i => i.classList.contains("open"));
+  all.forEach(i => setOpen(i, open)); syncToggle();
+};
+
+$("#chips").innerHTML = S.map(s => `<button class="chip" data-id="${s.id}" style="--c:var(${s.c})">${s.t}</button>`).join("");
+$("#chips").querySelectorAll(".chip").forEach(b => b.onclick = () => {
+  const el = document.getElementById(b.dataset.id);
+  if(el){ el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); }
+});
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){
+    document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-current", c.dataset.id===e.target.id));
+  }});
+}, {rootMargin:"-30% 0px -60% 0px"});
+function observe(){ document.querySelectorAll("section").forEach(s => obs.observe(s)); }
+
+let t; $("#q").addEventListener("input", e => { clearTimeout(t); t = setTimeout(()=>{ query = e.target.value.trim(); render(); observe(); }, 120); });
+
+render(); observe();
+const h = location.hash.slice(1);
+if(h){ const it = document.getElementById(h); if(it && it.classList.contains("item")){ setOpen(it,true); syncToggle(); setTimeout(()=>it.scrollIntoView(),50); } }
+</script>
+</body>
+</html>

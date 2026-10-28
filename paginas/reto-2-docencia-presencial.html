@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto: docencia presencial y virtual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#16313D; --muted:#566771; --line:#D5DEE0; --soft:#E8EEEF;
+  --a:#C98A0B; --b:#2C6A9E; --c:#2F7F4F; --d:#7E4596; --e:#B4462F; --f:#0F7C82;
+  --ok:#2F7F4F; --okbg:#E3F2E8; --bad:#B4462F; --badbg:#F8E6E1; --focus:#2C6A9E; --sel:#2C6A9E; --selbg:#E2ECF5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+    --a:#E8B33C; --b:#6FA9DA; --c:#6CC08D; --d:#C08AD6; --e:#E58A72; --f:#5CC3C8;
+    --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA; --sel:#6FA9DA; --selbg:#1B3346;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+  --a:#E8B33C; --b:#6FA9DA; --c:#6CC08D; --d:#C08AD6; --e:#E58A72; --f:#5CC3C8;
+  --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA; --sel:#6FA9DA; --selbg:#1B3346;
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+h1{font-weight:900;font-size:clamp(2rem,7vw,3.1rem);line-height:1.04;letter-spacing:-.02em;margin:.4rem 0 .75rem}
+h2{font-weight:900;font-size:1.5rem;line-height:1.2;margin:0 0 .5rem}
+p{margin:0 0 .8rem}
+.muted{color:var(--muted)}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.primary{background:var(--ink);color:var(--bg);border:0;border-radius:12px;padding:.85rem 1.4rem;font-weight:700}
+.primary[disabled]{opacity:.35;cursor:default}
+.ghost{background:transparent;border:2px solid var(--line);border-radius:12px;padding:.75rem 1.2rem}
+/* Portada: seis componentes */
+.six{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1.25rem 0}
+.six div{background:var(--surface);border:1.5px solid var(--line);border-top:6px solid var(--k);border-radius:10px;padding:.6rem .7rem;font-weight:500;font-size:.92rem;line-height:1.25}
+.levels{display:grid;gap:.55rem;margin:1rem 0 1.5rem;padding:0;list-style:none}
+.levels li{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem}
+.levels .n{font-weight:900;font-size:1.4rem;text-align:center}
+.levels small{display:block;color:var(--muted)}
+/* HUD */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:.6rem 0 .8rem;border-bottom:1px solid var(--line);margin-bottom:1.25rem}
+.hud-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.lvl{font-weight:700}
+.stat{margin-left:auto;display:flex;align-items:baseline;gap:.3rem}
+.stat b{font-weight:900;font-size:1.5rem}
+.lives{letter-spacing:.1em}
+.streak{font-size:.9rem;font-weight:700;color:var(--a)}
+.track{height:8px;background:var(--soft);border-radius:99px;margin-top:.55rem;overflow:hidden}
+.fill{height:100%;background:var(--ink);width:0;transition:width .3s}
+.intro-lvl{border-left:6px solid var(--ink);padding:.2rem 0 .2rem 1rem;margin-bottom:1.1rem}
+.prompt{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem;font-size:1.12rem;line-height:1.4;font-weight:500}
+.prompt .tag{display:block;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+.prompt .big{font-size:1.25rem;font-weight:700}
+.opts{display:grid;gap:.55rem;margin-top:1rem}
+.cols2{grid-template-columns:1fr 1fr}
+.cols3{grid-template-columns:repeat(3,1fr)}
+.opt{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:.85rem 1rem;line-height:1.3;display:flex;gap:.6rem;align-items:flex-start}
+.opt .k{flex:0 0 auto;width:1.55rem;height:1.55rem;border-radius:6px;background:var(--soft);display:grid;place-items:center;font-size:.82rem;font-weight:700;color:var(--muted)}
+.opt.bin{flex-direction:column;align-items:center;text-align:center;font-weight:900;font-size:1.2rem;border-top:6px solid var(--k,var(--line));padding:1rem .5rem}
+.opt.bin small{font-weight:400;font-size:.8rem;color:var(--muted)}
+.opt:not([disabled]):hover{border-color:var(--ink)}
+.opt.picked{border-color:var(--sel);background:var(--selbg)}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.missed{border-style:dashed;border-color:var(--ok)}
+.opt[disabled]{cursor:default}
+.box{width:1.3rem;height:1.3rem;border:2px solid var(--line);border-radius:5px;flex:0 0 auto;display:grid;place-items:center;font-size:.8rem;margin-top:.05rem}
+.opt.picked .box{background:var(--sel);border-color:var(--sel);color:var(--surface)}
+/* Emparejar */
+.match{display:grid;grid-template-columns:1fr 1.4fr;gap:.6rem;margin-top:1rem;align-items:start}
+.col{display:grid;gap:.5rem}
+.col h3{margin:0 0 .1rem;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.mcard{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:.7rem .85rem;line-height:1.3;font-size:.95rem;min-height:3.2rem}
+.mcard.comp{font-weight:700;border-left:6px solid var(--k)}
+.mcard.sel{border-color:var(--sel);background:var(--selbg)}
+.mcard.done{border-color:var(--ok);background:var(--okbg);opacity:.7;cursor:default}
+.mcard.shake{animation:shake .35s}
+@keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.fb{margin-top:1rem;border-radius:12px;padding:.95rem 1.05rem}
+.fb.ok{background:var(--okbg);border:1.5px solid var(--ok)}
+.fb.no{background:var(--badbg);border:1.5px solid var(--bad)}
+.fb.info{background:var(--surface);border:1.5px solid var(--line)}
+.fb strong{display:block;margin-bottom:.2rem}
+.fb .pts{float:right;font-weight:900}
+.row-end{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.badge{display:inline-grid;place-items:center;width:5.5rem;height:5.5rem;border-radius:50%;border:5px solid var(--ink);font-size:2.4rem;margin:.5rem 0 1rem;background:var(--surface)}
+.score-big{font-weight:900;font-size:clamp(3rem,12vw,5rem);line-height:1;margin:.25rem 0}
+.sum{list-style:none;padding:0;margin:1.25rem 0;display:grid;gap:.5rem}
+.sum li{display:flex;justify-content:space-between;gap:1rem;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem}
+.review details{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin-bottom:.5rem}
+.review summary{cursor:pointer;font-weight:700}
+.review p{margin:.5rem 0 0;font-size:.95rem}
+.hide{display:none!important}
+.note{font-size:.85rem;color:var(--muted);margin-top:2rem}
+@media (max-width:560px){.six{grid-template-columns:1fr 1fr}.cols3{grid-template-columns:1fr}.cols2.long{grid-template-columns:1fr}.match{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.pop,.mcard.shake{animation:none}.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="start">
+  <p class="muted">Universidad de Manizales · Compromisos académicos</p>
+  <h1>Reto: docencia presencial y virtual</h1>
+  <p>En el aula o en la plataforma, el contacto directo y el trabajo independiente se viven de forma distinta. Supera cuatro niveles y comprueba si sabes reconocerlos en cada modalidad.</p>
+  <div class="six" id="six"></div>
+  <ul class="levels" id="levelList"></ul>
+  <p class="muted">Tienes 3 vidas por nivel. Cada acierto suma 10 puntos y, desde tres aciertos seguidos, ganas 5 puntos extra.</p>
+  <button class="primary" id="go">Comenzar el reto</button>
+  <p class="muted" id="best" style="margin-top:.75rem"></p>
+</section>
+
+<section id="game" class="hide">
+  <div class="hud">
+    <div class="hud-row">
+      <span class="lvl" id="hLvl"></span>
+      <span class="muted" id="hQ"></span>
+      <span class="streak" id="hStreak"></span>
+      <span class="lives" id="hLives"></span>
+      <span class="stat"><b id="hScore">0</b><span class="muted">puntos</span></span>
+    </div>
+    <div class="track"><div class="fill" id="hFill"></div></div>
+  </div>
+  <div class="intro-lvl" id="lvlIntro"></div>
+  <div class="prompt" id="prompt" aria-live="polite"></div>
+  <div id="area"></div>
+  <div id="fb" role="status"></div>
+  <div class="row-end"><button class="primary hide" id="next">Siguiente</button></div>
+</section>
+
+<section id="lvlEnd" class="hide"></section>
+<section id="end" class="hide"></section>
+
+<p class="note">Basado en las orientaciones “Comprender para planear, planear para desarrollar y evidenciar para mejorar” (Universidad de Manizales, 2026) y el Estatuto de los Académicos (2024): la docencia en las modalidades presencial y virtual.</p>
+</div>
+
+<script>
+const KEYS=[["Contacto directo presencial","--a"],["Pacto Pedagógico","--b"],["Interacción sincrónica","--c"],["Interacción asincrónica","--d"],["Horas de interacción académica (HIA)","--e"],["Trabajo independiente (HTI)","--f"]];
+
+const LEVELS = [
+ {name:"La docencia presencial", icon:"🏫", desc:"Contacto directo, trabajo independiente y Pacto Pedagógico.",
+  intro:"En la presencialidad, el contacto directo son los encuentros con los estudiantes según la programación de la asignatura. El trabajo independiente también existe y requiere al profesor.",
+  items:[
+   {k:"multi",t:"¿Dónde puede ocurrir el contacto directo en la presencialidad? Selecciona todas las opciones correctas.",o:["En el aula","En el laboratorio","En el escenario de práctica","En otros ambientes de aprendizaje, según la programación","En la casa del estudiante, mientras lee por su cuenta"],c:[0,1,2,3],w:"El contacto directo son los encuentros con los estudiantes en el aula, el laboratorio, el escenario de práctica u otros ambientes de aprendizaje. La lectura autónoma es trabajo independiente."},
+   {k:"two",lab:["Realidad","Mito"],t:"En la presencialidad no existe trabajo independiente: todo ocurre en clase.",c:1,w:"Mito. El trabajo independiente del estudiante también existe en la presencialidad y requiere al profesor."},
+   {k:"choice",t:"Según el Estatuto (art. 34, literal f), ¿qué deber tienen los académicos frente al trabajo independiente?",o:["Ninguno: es responsabilidad exclusiva del estudiante","Acompañarlo","Calificarlo solo al final del periodo","Delegarlo en un monitor"],c:1,w:"El Estatuto incluye entre los deberes de los académicos acompañar el trabajo independiente de los estudiantes."},
+   {k:"choice",t:"¿Qué profesores están exceptuados de ese deber, según la naturaleza de sus compromisos?",o:["Los de tiempo completo","Los de medio tiempo","Los catedráticos","Ninguno"],c:2,w:"La excepción aplica a los profesores catedráticos, según la naturaleza de sus compromisos (art. 34, literal f)."},
+   {k:"multi",t:"¿En qué se apoya el acompañamiento del trabajo independiente? Selecciona todas las correctas.",o:["El syllabus","El Pacto Pedagógico","El horario de la cafetería","El reglamento de parqueaderos"],c:[0,1],w:"El acompañamiento se apoya en el syllabus y en el Pacto Pedagógico."},
+   {k:"choice",t:"¿Cuándo se concerta el Pacto Pedagógico con los estudiantes?",o:["En la primera sesión","A mitad del periodo","Al cierre del periodo","Solo si los estudiantes lo piden"],c:0,w:"Se concerta con los estudiantes en la primera sesión (art. 34, literal c)."},
+   {k:"two",lab:["Realidad","Mito"],t:"En la presencialidad, el compromiso reconoce también la planeación, la evaluación y el seguimiento.",c:0,w:"Realidad. Además del contacto directo, el compromiso reconoce la planeación, la evaluación y el seguimiento."}
+  ]},
+ {name:"Sincrónica, asincrónica o HTI", icon:"💻", desc:"Clasifica las actividades de un curso virtual.",
+  bins:[["Sincrónica","Mismo momento","--c"],["Asincrónica","Sin coincidir en el tiempo","--d"],["HTI","Trabajo autónomo","--f"]],
+  intro:"<strong>Sincrónica</strong>: profesor y estudiantes coinciden en el mismo momento. <strong>Asincrónica</strong>: interactúan sin coincidir en el tiempo. <strong>HTI</strong>: el estudiante trabaja de forma autónoma en actividades diseñadas por el profesor.",
+  items:[
+   {k:"bin",t:"Una videoconferencia con el grupo",c:0,w:"Profesor y estudiantes coinciden en el mismo momento, aunque estén en lugares distintos. Se graba y queda en la plataforma."},
+   {k:"bin",t:"El profesor dinamiza el foro permanente",c:1,w:"Dinamizar el foro es interacción asincrónica: se interactúa sin coincidir en el tiempo."},
+   {k:"bin",t:"El estudiante elabora un mapa conceptual",c:2,w:"Es trabajo independiente: el estudiante trabaja de forma autónoma en una actividad diseñada por el profesor."},
+   {k:"bin",t:"Un chat en vivo durante la sesión",c:0,w:"El chat en vivo ocurre en el mismo momento: es interacción sincrónica."},
+   {k:"bin",t:"El profesor retroalimenta las entregas en la plataforma",c:1,w:"Retroalimentar las entregas es parte de la interacción asincrónica."},
+   {k:"bin",t:"Un grupo de estudiantes desarrolla un estudio de caso",c:2,w:"El trabajo independiente puede ser individual o colaborativo, como un estudio de caso."},
+   {k:"bin",t:"El profesor responde una inquietud por el correo institucional",c:1,w:"Responder oportunamente por canales oficiales como el foro, el correo o la mensajería es interacción asincrónica."},
+   {k:"bin",t:"El estudiante hace trabajo de campo y analiza datos",c:2,w:"El trabajo de campo y el análisis de datos son actividades de trabajo independiente."},
+   {k:"bin",t:"El profesor acompaña una wiki y un videoquiz",c:1,w:"Acompañar wikis o videoquices es interacción asincrónica."},
+   {k:"bin",t:"El estudiante construye un mentefacto",c:2,w:"Los mentefactos, como las lecturas, consultas y tareas, son trabajo independiente."}
+  ]},
+ {name:"Contacto directo en la virtualidad", icon:"🔗", desc:"HIA, grabaciones y canales oficiales.",
+  intro:"En la virtualidad, la interacción ocurre en la plataforma educativa: en el material, los recursos, las actividades y en dinámicas de reflexión, diálogo y argumentación.",
+  items:[
+   {k:"choice",t:"En los programas virtuales, ¿qué comprende el contacto directo?",o:["Solo las videoconferencias","Las horas sincrónicas y las asincrónicas de interacción en plataforma","Solo el trabajo independiente","Las horas de lectura del estudiante"],c:1,w:"El contacto directo comprende tanto las horas sincrónicas como las asincrónicas de interacción en plataforma."},
+   {k:"choice",t:"¿Cómo se llama ese tiempo en la terminología de la virtualidad?",o:["Horas de trabajo independiente (HTI)","Horas de interacción académica (HIA)","Horas complementarias (HCC)","Horas de bonificación"],c:1,w:"Ese tiempo corresponde a las horas de interacción académica (HIA)."},
+   {k:"two",lab:["Realidad","Mito"],t:"En la virtualidad, profesor y estudiante deben coincidir siempre en el mismo momento para que haya contacto directo.",c:1,w:"Mito. No necesitan coincidir en el mismo espacio físico ni, necesariamente, en el mismo momento."},
+   {k:"choice",t:"¿Qué pasa con los encuentros sincrónicos?",o:["Se borran al terminar","Se graban y quedan disponibles en la plataforma educativa","Solo los ve el profesor","Se envían por WhatsApp"],c:1,w:"Los encuentros sincrónicos se graban y quedan disponibles en la plataforma educativa."},
+   {k:"multi",t:"¿Por cuáles canales oficiales responde el profesor las inquietudes? Selecciona todas las correctas.",o:["El foro","El correo electrónico","La mensajería","Las redes sociales personales"],c:[0,1,2],w:"Las inquietudes se responden oportunamente por canales oficiales como el foro, el correo electrónico o la mensajería."},
+   {k:"multi",t:"¿A través de qué ocurre la interacción en la plataforma? Selecciona todas las correctas.",o:["El material de estudio","Los recursos","Las actividades","Dinámicas que promueven la reflexión, el diálogo y la argumentación","La asistencia física al campus"],c:[0,1,2,3],w:"La interacción ocurre a través del material, los recursos y las actividades, y de dinámicas de reflexión, diálogo y argumentación."}
+  ]},
+ {name:"¿Presencial, virtual o ambas?", icon:"⚖️", desc:"Compara las dos modalidades.",
+  bins:[["Presencial","En el aula y otros espacios","--a"],["Virtual","En la plataforma","--d"],["Ambas","Las dos modalidades","--b"]],
+  intro:"Decide si cada afirmación describe la modalidad presencial, la virtual o ambas.",
+  items:[
+   {k:"bin",t:"El contacto directo ocurre en el aula, el laboratorio o el escenario de práctica",c:0,w:"Así se describe el contacto directo en la presencialidad."},
+   {k:"bin",t:"El contacto directo incluye horas asincrónicas de interacción en plataforma",c:1,w:"En los programas virtuales, el contacto directo comprende horas sincrónicas y asincrónicas."},
+   {k:"bin",t:"Existe trabajo independiente del estudiante que el profesor diseña o acompaña",c:2,w:"El trabajo independiente existe en ambas modalidades y requiere al profesor."},
+   {k:"bin",t:"El tiempo de contacto directo se llama horas de interacción académica (HIA)",c:1,w:"HIA es la terminología propia de la virtualidad."},
+   {k:"bin",t:"Profesor y estudiante no necesitan coincidir en el mismo espacio físico",c:1,w:"En la virtualidad no se necesita coincidir en el mismo espacio ni, necesariamente, en el mismo momento."},
+   {k:"bin",t:"Los encuentros sincrónicos se graban y quedan disponibles en la plataforma",c:1,w:"Es una característica de la interacción sincrónica en la virtualidad."}
+  ]}
+];
+
+const $=s=>document.querySelector(s);
+const show=id=>["start","game","lvlEnd","end"].forEach(s=>$("#"+s).classList.toggle("hide",s!==id));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let L=0,Q=0,score=0,streak=0,maxStreak=0,lives=3,answered=false,results=[],misses=[],lvlStart=0;
+const KEY="reto-docencia-presencial-virtual-best";
+const bestText=()=>{try{const b=JSON.parse(localStorage.getItem(KEY)||"null");return b?`Tu mejor puntaje: ${b} puntos`:"";}catch(e){return "";}};
+const saveBest=()=>{try{const b=JSON.parse(localStorage.getItem(KEY)||"0");if(score>b)localStorage.setItem(KEY,JSON.stringify(score));}catch(e){}};
+
+$("#six").innerHTML=KEYS.map(c=>`<div style="--k:var(${c[1]})">${c[0]}</div>`).join("");
+$("#levelList").innerHTML=LEVELS.map((l,i)=>`<li><span class="n">${l.icon}</span><span><strong>Nivel ${i+1}: ${l.name}</strong><small>${l.desc}</small></span></li>`).join("");
+$("#best").textContent=bestText();
+
+function startGame(){L=0;score=0;maxStreak=0;results=[];misses=[];startLevel();}
+function startLevel(){Q=0;lives=3;streak=0;lvlStart=score;results[L]={ok:0,total:LEVELS[L].items.length};misses=misses.filter(m=>m.lvl!==LEVELS[L].name);show("game");renderQ();}
+function hud(progress){
+  const lv=LEVELS[L];
+  $("#hLvl").textContent=`Nivel ${L+1}: ${lv.name}`;
+  $("#hQ").textContent=`Pregunta ${Q+1} de ${lv.items.length}`;
+  $("#hScore").textContent=score;
+  $("#hLives").textContent="❤️".repeat(Math.max(lives,0))+"🤍".repeat(3-Math.max(lives,0));
+  $("#hLives").setAttribute("aria-label",`${lives} vidas`);
+  $("#hStreak").textContent=streak>=2?`🔥 ${streak} seguidos`:"";
+  $("#hFill").style.width=(progress*100)+"%";
+}
+function gain(){streak++;maxStreak=Math.max(maxStreak,streak);const p=10+(streak>=3?5:0);score+=p;results[L].ok++;return p;}
+function lose(miss){streak=0;lives--;misses.push(Object.assign({lvl:LEVELS[L].name},miss));}
+
+function renderQ(){
+  const lv=LEVELS[L],it=lv.items[Q];answered=false;
+  $("#lvlIntro").innerHTML=lv.intro;$("#fb").className="";$("#fb").innerHTML="";$("#next").classList.add("hide");
+  hud(Q/lv.items.length);
+  const P=$("#prompt"),A=$("#area");
+  const tag={multi:"Selección múltiple",bin:"¿Dónde va?",two:"¿Mito o realidad?",choice:"Pregunta"}[it.k];
+  P.innerHTML=`<span class="tag">${tag}</span><span class="${it.k==="bin"||it.k==="two"?"big":""}">${it.t}</span>`;
+  if(it.k==="bin") A.innerHTML=`<div class="opts cols3">${lv.bins.map((b,i)=>`<button class="opt bin" data-i="${i}" style="--k:var(${b[2]})">${b[0]}<small>${b[1]}</small></button>`).join("")}</div>`;
+  else if(it.k==="two") A.innerHTML=`<div class="opts cols2">${it.lab.map((b,i)=>`<button class="opt bin" data-i="${i}" style="--k:var(${i?"--e":"--c"})">${b}<small>${i?"Idea equivocada":"Así funciona"}</small></button>`).join("")}</div>`;
+  else if(it.k==="choice") A.innerHTML=`<div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${o}</span></button>`).join("")}</div>`;
+  else if(it.k==="multi"){
+    const order=shuffle(it.o.map((_,i)=>i));
+    A.innerHTML=`<div class="opts cols2 long">${order.map(i=>`<button class="opt" data-i="${i}" aria-pressed="false"><span class="box" aria-hidden="true">✓</span><span>${it.o[i]}</span></button>`).join("")}</div><div class="row-end"><button class="primary" id="check" disabled>Comprobar</button></div>`;
+    A.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(answered)return;const on=b.classList.toggle("picked");b.setAttribute("aria-pressed",on);$("#check").disabled=!A.querySelector(".opt.picked");});
+    $("#check").onclick=checkMulti;
+  }
+  if(it.k!=="multi") A.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  P.classList.remove("pop");void P.offsetWidth;P.classList.add("pop");
+}
+function labelOf(it,i){const lv=LEVELS[L];return it.k==="bin"?lv.bins[i][0]:it.k==="two"?it.lab[i]:it.o[i];}
+function pick(i){
+  if(answered)return;answered=true;const it=LEVELS[L].items[Q],ok=i===it.c;
+  $("#area").querySelectorAll(".opt").forEach(b=>{const bi=+b.dataset.i;b.disabled=true;if(bi===it.c)b.classList.add("correct");else if(bi===i)b.classList.add("wrong");});
+  finish(ok,labelOf(it,it.c),it);
+}
+function checkMulti(){
+  if(answered)return;answered=true;const it=LEVELS[L].items[Q];
+  const picked=[...$("#area").querySelectorAll(".opt.picked")].map(b=>+b.dataset.i);
+  const ok=picked.length===it.c.length&&it.c.every(i=>picked.includes(i));
+  $("#area").querySelectorAll(".opt").forEach(b=>{const i=+b.dataset.i,should=it.c.includes(i),was=picked.includes(i);b.disabled=true;
+    if(should&&was)b.classList.add("correct");else if(!should&&was)b.classList.add("wrong");else if(should&&!was)b.classList.add("missed");});
+  $("#check").disabled=true;
+  finish(ok,it.c.map(i=>it.o[i]).join(", "),it);
+}
+function finish(ok,right,it){
+  let p=0;if(ok)p=gain();else lose({q:it.t,a:right,why:it.w});
+  const fb=$("#fb");fb.className="fb "+(ok?"ok":"no");
+  fb.innerHTML=`<span class="pts">${ok?`+${p}`:"−1 ❤️"}</span><strong>${ok?(p>10?"¡Correcto, con bono de racha!":"¡Correcto!"):`La respuesta es: ${right}`}</strong>${it.w}`;
+  const lv=LEVELS[L];hud((Q+1)/lv.items.length);
+  const more=Q+1<lv.items.length,nx=$("#next");
+  if(lives<=0){nx.textContent="Ver resultado";nx.onclick=failLevel;}
+  else{nx.textContent=more?"Siguiente":"Ver resultado del nivel";nx.onclick=()=>{if(more){Q++;renderQ();}else levelEnd();};}
+  nx.classList.remove("hide");nx.focus();
+}
+function failLevel(){
+  $("#lvlEnd").innerHTML=`<p class="muted">Nivel ${L+1}</p><div class="badge" aria-hidden="true">💡</div><h2>Te quedaste sin vidas</h2>
+   <p>Cada error es una pista. Revisa las explicaciones e inténtalo de nuevo; tu puntaje vuelve al que tenías al empezar este nivel.</p>
+   <div class="row-end" style="justify-content:flex-start"><button class="primary" id="retry">Repetir el nivel ${L+1}</button></div>`;
+  show("lvlEnd");$("#retry").focus();$("#retry").onclick=()=>{score=lvlStart;startLevel();};
+}
+function levelEnd(){
+  const lv=LEVELS[L],r=results[L];
+  $("#lvlEnd").innerHTML=`<p class="muted">Nivel ${L+1} completado</p><div class="badge" aria-hidden="true">${lv.icon}</div><h2>${lv.name}</h2>
+   <p>${r.ok===r.total?"¡Nivel perfecto, sin perder vidas!":"¡Nivel superado!"} Acertaste ${r.ok} de ${r.total}.</p><p class="muted">Puntaje acumulado: ${score}</p>
+   <div class="row-end" style="justify-content:flex-start"><button class="primary" id="lvNext">${L+1<LEVELS.length?`Ir al nivel ${L+2}: ${LEVELS[L+1].name}`:"Ver resultado final"}</button></div>`;
+  show("lvlEnd");$("#lvNext").focus();$("#lvNext").onclick=()=>{if(L+1<LEVELS.length){L++;startLevel();}else final();};
+}
+function final(){
+  saveBest();
+  const ok=results.reduce((a,r)=>a+r.ok,0),errs=misses.length,pct=ok/(ok+errs||1);
+  const m=pct>=.9?["🥇","Oro","Reconoces con precisión cómo se vive la docencia en el aula y en la plataforma."]:pct>=.75?["🥈","Plata","Tienes una comprensión sólida; repasa los detalles que se te escaparon."]:["🥉","Bronce","Ya tienes las bases. Un repaso te ayudará a distinguir mejor cada modalidad."];
+  $("#end").innerHTML=`<p class="muted">Reto completado</p><div class="badge" aria-hidden="true">${m[0]}</div><h2>Medalla de ${m[1]}</h2>
+   <div class="score-big">${score}</div><p class="muted">puntos · ${ok} aciertos · ${errs} ${errs===1?"error":"errores"} · racha máxima de ${maxStreak}</p><p>${m[2]}</p>
+   <ul class="sum">${LEVELS.map((l,i)=>`<li><span>${l.icon} ${l.name}</span><strong>${results[i].ok} de ${results[i].total}</strong></li>`).join("")}</ul>
+   ${errs?`<div class="review"><h2>Para repasar</h2>${misses.map(x=>`<details><summary>${x.q}</summary><p><strong>Respuesta:</strong> ${x.a}</p><p>${x.why}</p></details>`).join("")}</div>`:`<p><strong>¡Sin errores!</strong></p>`}
+   <div class="row-end" style="justify-content:flex-start"><button class="primary" id="again">Jugar de nuevo</button><button class="ghost" id="home">Volver al inicio</button></div>`;
+  show("end");
+  $("#again").onclick=startGame;$("#home").onclick=()=>{$("#best").textContent=bestText();show("start");};
+}
+$("#go").onclick=startGame;
+document.addEventListener("keydown",e=>{
+  if($("#game").classList.contains("hide")||answered)return;
+  const it=LEVELS[L].items[Q];if(!it||it.k==="multi")return;
+  const n=parseInt(e.key,10),btns=$("#area").querySelectorAll(".opt");
+  if(n>=1&&n<=btns.length)pick(+btns[n-1].dataset.i);
+});
+</script>
+</body>
+</html>

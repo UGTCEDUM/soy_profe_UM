@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto de la evaluación docente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#16313D; --muted:#566771; --line:#D5DEE0; --soft:#E8EEEF;
+  --est:#2C6A9E; --jef:#7E4596; --aut:#C98A0B; --ser:#B4462F; --sab:#2C6A9E; --hac:#2F7F4F; --eva:#0F7C82;
+  --ok:#2F7F4F; --okbg:#E3F2E8; --bad:#B4462F; --badbg:#F8E6E1; --focus:#2C6A9E;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+    --est:#6FA9DA; --jef:#C08AD6; --aut:#E8B33C; --ser:#E58A72; --sab:#6FA9DA; --hac:#6CC08D; --eva:#5CC3C8;
+    --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+  --est:#6FA9DA; --jef:#C08AD6; --aut:#E8B33C; --ser:#E58A72; --sab:#6FA9DA; --hac:#6CC08D; --eva:#5CC3C8;
+  --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA;
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+h1,h2{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif}
+h1{font-weight:800;font-size:clamp(2rem,7vw,3.2rem);line-height:1.02;letter-spacing:-.02em;margin:.5rem 0 .75rem}
+h2{font-weight:700;font-size:1.5rem;line-height:1.2;margin:0 0 .5rem}
+p{margin:0 0 .8rem}
+.muted{color:var(--muted)}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.primary{background:var(--ink);color:var(--bg);border:0;border-radius:12px;padding:.85rem 1.4rem;font-weight:700;font-size:1.05rem}
+.primary[disabled]{opacity:.4;cursor:default}
+.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:.75rem 1.2rem}
+/* Balanza 360 en portada */
+.scale{display:flex;height:2.4rem;border-radius:10px;overflow:hidden;margin:1.25rem 0 .4rem;font-weight:700;font-size:.9rem}
+.scale span{display:grid;place-items:center;color:#fff}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.88rem;color:var(--muted);margin-bottom:1rem}
+.legend i{display:inline-block;width:.7rem;height:.7rem;border-radius:3px;margin-right:.35rem;vertical-align:middle}
+/* HUD */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:4;background:var(--bg);padding:.6rem 0 .8rem;border-bottom:1px solid var(--line);margin-bottom:1.25rem}
+.hud-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.lvl{font-weight:700}
+.stat{display:flex;align-items:baseline;gap:.3rem;margin-left:auto}
+.stat b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:1.5rem;font-weight:800}
+.lives{font-size:.95rem;letter-spacing:.1em}
+.track{height:8px;background:var(--soft);border-radius:99px;margin-top:.6rem;overflow:hidden}
+.fill{height:100%;background:var(--c,var(--ink));width:0;transition:width .3s}
+.levels{display:grid;gap:.6rem;margin:1.25rem 0 1.5rem;padding:0;list-style:none}
+.levels li{display:grid;grid-template-columns:2.4rem 1fr;gap:.8rem;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:.75rem 1rem}
+.levels .n{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:1.5rem;color:var(--c);text-align:center}
+.levels small{display:block;color:var(--muted)}
+.intro-lvl{border-left:6px solid var(--c);padding:.25rem 0 .25rem 1rem;margin-bottom:1.25rem}
+.prompt{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:1.4rem;min-height:6.5rem;font-size:1.12rem;line-height:1.4}
+.prompt .tag{display:inline-block;font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.prompt .quote{font-style:italic;font-size:1.18rem;font-weight:700}
+.data{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.9rem}
+.data div{border-radius:10px;padding:.55rem .6rem;background:var(--soft);border-top:4px solid var(--dc);font-size:.85rem}
+.data b{display:block;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:1.35rem}
+.opts{display:grid;gap:.6rem;margin-top:1rem}
+.opts.cols2{grid-template-columns:1fr 1fr}
+.opts.cols3{grid-template-columns:repeat(3,1fr)}
+.opt{text-align:left;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:.9rem 1rem;line-height:1.3;display:flex;gap:.6rem;align-items:flex-start}
+.opt .k{flex:0 0 auto;width:1.6rem;height:1.6rem;border-radius:6px;background:var(--soft);display:grid;place-items:center;font-size:.85rem;font-weight:700;color:var(--muted)}
+.opt.big{justify-content:center;flex-direction:column;align-items:center;text-align:center;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:1.2rem;padding:1rem .6rem;border-top:6px solid var(--dc,var(--line))}
+.opt.big small{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:400;font-size:.8rem;color:var(--muted)}
+.opt:not([disabled]):hover{border-color:var(--ink)}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt[disabled]{cursor:default}
+/* Ordenar */
+.slots{display:grid;gap:.5rem;margin-top:1rem}
+.slot{display:flex;gap:.7rem;align-items:center;border:2px dashed var(--line);border-radius:12px;padding:.7rem .9rem;min-height:3.2rem;color:var(--muted)}
+.slot .num{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;color:var(--c);width:1.4rem}
+.slot.filled{border-style:solid;color:var(--ink);background:var(--surface)}
+.slot.correct{border-color:var(--ok);background:var(--okbg)}
+.slot.wrong{border-color:var(--bad);background:var(--badbg)}
+.pool{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.chipbtn{background:var(--surface);color:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:.55rem 1rem;line-height:1.25;text-align:left}
+.chipbtn[disabled]{opacity:.25;border-style:dashed}
+.order-actions{display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+.fb{margin-top:1rem;border-radius:12px;padding:1rem 1.1rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--okbg);border:1.5px solid var(--ok)}
+.fb.no{background:var(--badbg);border:1.5px solid var(--bad)}
+.fb strong{display:block;margin-bottom:.25rem}
+.fb .pts{float:right;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800}
+.next-row{display:flex;justify-content:flex-end;margin-top:1rem}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.badge{display:inline-grid;place-items:center;width:5.5rem;height:5.5rem;border-radius:50%;border:5px solid var(--c);font-size:2.4rem;margin:.5rem 0 1rem;background:var(--surface)}
+.score-big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(3rem,12vw,5rem);line-height:1;margin:.25rem 0}
+.sum{list-style:none;padding:0;margin:1.25rem 0;display:grid;gap:.5rem}
+.sum li{display:flex;justify-content:space-between;gap:1rem;background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:.7rem 1rem}
+.review details{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin-bottom:.5rem}
+.review summary{cursor:pointer;font-weight:700}
+.review p{margin:.5rem 0 0;font-size:.95rem}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.hide{display:none!important}
+.note{font-size:.85rem;color:var(--muted);margin-top:1.5rem}
+@media (max-width:540px){.opts.cols2,.opts.cols3{grid-template-columns:1fr}.data{grid-template-columns:1fr 1fr 1fr}.data b{font-size:1.1rem}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="start">
+    <p class="muted">Universidad de Manizales · Evaluación docente</p>
+    <h1>Reto de la evaluación docente</h1>
+    <p>La evaluación docente reúne tres miradas sobre tu práctica y se convierte en un plan para seguir creciendo. Recorre cuatro niveles, suma puntos y descubre cómo leer tus resultados y qué hacer con ellos.</p>
+    <div class="scale" aria-label="Pesos de la evaluación 360 grados: estudiantes 50 %, jefe inmediato 25 %, autoevaluación 25 %">
+      <span style="flex:50;background:var(--est)">50 %</span>
+      <span style="flex:25;background:var(--jef)">25 %</span>
+      <span style="flex:25;background:var(--aut)">25 %</span>
+    </div>
+    <div class="legend"><span><i style="background:var(--est)"></i>Estudiantes</span><span><i style="background:var(--jef)"></i>Jefe inmediato</span><span><i style="background:var(--aut)"></i>Autoevaluación</span></div>
+    <ul class="levels" id="levelList"></ul>
+    <p class="muted">Tienes 3 vidas por nivel. Si las pierdes, puedes repetir ese nivel. Encadenar tres aciertos suma 5 puntos extra por respuesta.</p>
+    <button class="primary" id="go">Comenzar el reto</button>
+    <p class="muted" id="best" style="margin-top:.75rem"></p>
+  </section>
+
+  <section id="game" class="hide">
+    <div class="hud">
+      <div class="hud-row">
+        <span class="lvl" id="hLvl"></span>
+        <span class="muted" id="hQ"></span>
+        <span class="lives" id="hLives" aria-label="Vidas"></span>
+        <span class="stat"><b id="hScore">0</b><span class="muted">puntos</span></span>
+      </div>
+      <div class="track"><div class="fill" id="hFill"></div></div>
+    </div>
+    <div id="lvlIntro" class="intro-lvl"></div>
+    <div class="prompt" id="prompt" aria-live="polite"></div>
+    <div id="area"></div>
+    <div class="fb" id="fb" role="status"></div>
+    <div class="next-row"><button class="primary hide" id="next">Siguiente</button></div>
+  </section>
+
+  <section id="lvlEnd" class="hide"></section>
+  <section id="end" class="hide"></section>
+
+  <p class="note">Basado en las orientaciones “Comprender para planear, planear para desarrollar y evidenciar para mejorar” (Universidad de Manizales, 2026) y el Estatuto de los Académicos. Las cifras de los casos son ejemplos pedagógicos.</p>
+</div>
+
+<script>
+const SRC = {est:["Estudiantes","--est",.5], jef:["Jefe inmediato","--jef",.25], aut:["Autoevaluación","--aut",.25]};
+const fmt = n => n.toFixed(2).replace(".",",");
+
+/* Nivel 1: casos para calcular el promedio 360 */
+function calcCase(e,j,a){
+  const r = .5*e + .25*j + .25*a;
+  return r;
+}
+const L1 = [
+ {k:"choice", t:"¿Qué peso tiene la mirada de los estudiantes en la evaluación?", o:["25 %","50 %","33 %","75 %"], c:1, w:"Los estudiantes aportan la mitad del resultado (50 %). El jefe inmediato y la autoevaluación aportan 25 % cada uno."},
+ {k:"choice", t:"¿Cuáles son las tres fuentes de la evaluación 360°?", o:["Estudiantes, egresados y decano","Estudiantes, jefe inmediato y autoevaluación","Jefe inmediato, pares y rectoría","Autoevaluación, Talento Humano y estudiantes"], c:1, w:"La evaluación integra tres miradas: estudiantes, jefe inmediato y autoevaluación."},
+ {k:"calc", e:4.4, j:4.6, a:4.8},
+ {k:"calc", e:4.0, j:4.4, a:4.8},
+ {k:"choice", t:"En el caso anterior, ¿qué fuente mueve más el promedio final si sube 0,4 puntos?", o:["Estudiantes","Jefe inmediato","Autoevaluación","Todas por igual"], c:0, w:"Como pesa el doble, un cambio en la evaluación de los estudiantes mueve el promedio el doble que el mismo cambio en las otras fuentes: 0,4 × 50 % = 0,20 puntos."},
+ {k:"calc", e:3.8, j:4.2, a:4.6}
+];
+
+/* Nivel 2: ser, saber, hacer */
+const DIM = [["Ser","Actitudes y relación","--ser"],["Saber","Dominio del conocimiento","--sab"],["Hacer","Práctica pedagógica","--hac"]];
+const L2 = [
+ ["“El profesor domina a fondo los temas y los relaciona con la actualidad de la disciplina.”",1,"Habla del dominio del conocimiento: es la dimensión del saber."],
+ ["“Siempre nos trata con respeto y escucha nuestras opiniones.”",0,"Se refiere a la actitud y la relación con los estudiantes: es la dimensión del ser."],
+ ["“Las actividades del curso están bien organizadas y la evaluación es clara.”",2,"Describe cómo se desarrolla la práctica pedagógica: es la dimensión del hacer."],
+ ["“Responde con prontitud en los foros y su retroalimentación nos ayuda a mejorar.”",2,"Retroalimentar y acompañar son acciones de la práctica: dimensión del hacer."],
+ ["“Es puntual y cumple con lo que acuerda con el grupo.”",0,"La responsabilidad y el cumplimiento de acuerdos hablan del ser."],
+ ["“Explica conceptos complejos con ejemplos actualizados de investigación.”",1,"Muestra la solidez y actualización del conocimiento: dimensión del saber."],
+ ["Acción del plan: “Diseñar rúbricas para todas las actividades evaluativas.”",2,"Mejorar los instrumentos de evaluación fortalece la práctica: dimensión del hacer."],
+ ["Acción del plan: “Cursar una actualización disciplinar en mi área.”",1,"Profundizar el conocimiento de la disciplina corresponde al saber."]
+];
+
+/* Nivel 3: plan de mejora y mantenimiento */
+const L3 = [
+ {k:"choice", t:"Tus estudiantes valoran mucho la claridad de tus explicaciones (4,8 sobre 5). ¿Qué tipo de plan corresponde para este aspecto?", o:["Plan de mejora","Plan de mantenimiento","Ningún plan","Plan disciplinario"], c:1, w:"Cuando el aspecto es una fortaleza, el plan de mantenimiento busca consolidarla."},
+ {k:"choice", t:"Varios estudiantes comentan que la retroalimentación de los trabajos llega tarde. ¿Qué tipo de plan corresponde?", o:["Plan de mejora","Plan de mantenimiento","No hace falta hacer nada","Esperar la siguiente evaluación"], c:0, w:"El plan de mejora busca fortalecer un aspecto de la práctica, como la oportunidad de la retroalimentación."},
+ {k:"order", t:"Ordena los elementos que definen el plan para cada dimensión.", items:["Objetivo","Acciones concretas","Evidencia o indicador"], w:"Primero se define qué se quiere lograr, luego qué se hará para lograrlo y, por último, cómo se demostrará."},
+ {k:"choice", t:"Tu objetivo es mejorar la claridad de los criterios de evaluación. ¿Cuál es la mejor evidencia?", o:["“Me siento más claro al evaluar”","Rúbricas publicadas en el syllabus para cada actividad","Haber dado más clases","Que nadie se queje"], c:1, w:"Una evidencia debe ser concreta y verificable, como un syllabus actualizado o rúbricas publicadas."},
+ {k:"order", t:"Ordena el ciclo que une el compromiso con la evaluación.", items:["Planear","Desarrollar","Evidenciar","Mejorar"], w:"Compromiso y evaluación forman un solo ciclo: planear, desarrollar, evidenciar y mejorar."},
+ {k:"choice", t:"¿Qué se registra en el seguimiento del plan?", o:["Solo la firma del decano","Fecha de avance, logros, evidencias y porcentaje de cumplimiento","El horario de clases","El número de estudiantes matriculados"], c:1, w:"El plan incluye una fecha de presentación del avance y un espacio para logros, evidencias y porcentaje de cumplimiento."}
+];
+
+/* Nivel 4: mito o realidad */
+const L4 = [
+ ["La evaluación docente tiene un enfoque principalmente sancionatorio.",1,"Mito. El Estatuto la concibe como sistemática, diferencial, dimensional y, sobre todo, formativa (artículo 28)."],
+ ["El profesor tiene derecho a conocer oportunamente sus resultados y a recibir acompañamiento.",0,"Realidad. Conocer los resultados y recibir acompañamiento es un derecho del profesor."],
+ ["El jefe inmediato construye el plan de mejora en lugar del profesor.",1,"Mito. Lo construye cada profesor; el jefe inmediato lo retroalimenta y acompaña su seguimiento (art. 28, par. 3)."],
+ ["La lectura cualitativa reemplaza los resultados numéricos.",1,"Mito. Es una síntesis de los comentarios abiertos que complementa los resultados numéricos, no los reemplaza."],
+ ["Si hay pocas respuestas de estudiantes, la plataforma advierte que se interprete con prudencia.",0,"Realidad. Con pocas respuestas, los resultados deben leerse con cautela."],
+ ["Las sugerencias de redacción de la plataforma pueden usarse tal cual, sin revisarlas.",1,"Mito. Son un apoyo y siempre deben ser revisadas y ajustadas por cada profesor."],
+ ["La Dirección de Docencia y el Instituto Pedagógico pueden apoyar el plan según las necesidades identificadas.",0,"Realidad. Ambas instancias ofrecen apoyo según lo que muestre la evaluación."],
+ ["El reporte del compromiso muestra la evaluación del periodo inmediatamente anterior.",0,"Realidad. Así se conecta lo aprendido en un periodo con la planeación del siguiente."]
+];
+
+const LEVELS = [
+ {name:"La balanza 360°", c:"--est", icon:"⚖️", desc:"Pesos de cada fuente y cálculo del promedio.", intro:"Estudiantes 50 %, jefe inmediato 25 % y autoevaluación 25 %. Usa esos pesos para responder.", items:L1},
+ {name:"Ser, saber y hacer", c:"--hac", icon:"🌱", desc:"Ubica comentarios y acciones en su dimensión.", intro:"Los resultados de los estudiantes se leen en tres dimensiones. ¿A cuál corresponde cada comentario o acción?", items:L2.map(x=>({k:"dim",t:x[0],c:x[1],w:x[2]}))},
+ {name:"Mi plan de mejora", c:"--aut", icon:"🛠️", desc:"Mejora o mantenimiento, objetivos y evidencias.", intro:"Con tus resultados construyes un plan para consolidar fortalezas y fortalecer aspectos de tu práctica.", items:L3},
+ {name:"Mito o realidad", c:"--jef", icon:"🔍", desc:"Derriba ideas equivocadas sobre la evaluación.", intro:"Decide si cada afirmación es un mito o una realidad.", items:L4.map(x=>({k:"tf",t:x[0],c:x[1],w:x[2]}))}
+];
+
+const $ = s => document.querySelector(s);
+const show = id => ["start","game","lvlEnd","end"].forEach(s => $("#"+s).classList.toggle("hide", s!==id));
+let L=0,Q=0,score=0,streak=0,maxStreak=0,lives=3,answered=false,results=[],misses=[],levelScoreStart=0,order=[];
+const STORE="reto-evaluacion-best";
+const bestText = () => { try{ const b=JSON.parse(localStorage.getItem(STORE)||"null"); return b?`Tu mejor puntaje: ${b} puntos`:""; }catch(e){ return ""; } };
+const saveBest = () => { try{ const b=JSON.parse(localStorage.getItem(STORE)||"0"); if(score>b) localStorage.setItem(STORE,JSON.stringify(score)); }catch(e){} };
+
+$("#levelList").innerHTML = LEVELS.map((l,i)=>`<li style="--c:var(${l.c})"><span class="n">${i+1}</span><span><strong>${l.name}</strong><small>${l.desc} ${l.items.length} retos.</small></span></li>`).join("");
+$("#best").textContent = bestText();
+
+function startGame(){ L=0; score=0; maxStreak=0; results=[]; misses=[]; startLevel(); }
+function startLevel(){ Q=0; lives=3; streak=0; levelScoreStart=score; results[L]={ok:0,total:LEVELS[L].items.length,pts:0}; misses=misses.filter(m=>m.lvl!==LEVELS[L].name); show("game"); renderQ(); }
+
+function hud(){
+  const lv=LEVELS[L];
+  $("#hLvl").textContent=`Nivel ${L+1}: ${lv.name}`;
+  $("#hQ").textContent=`Reto ${Q+1} de ${lv.items.length}`;
+  $("#hScore").textContent=score;
+  $("#hLives").textContent="❤️".repeat(lives)+"🤍".repeat(3-lives);
+  $("#hLives").setAttribute("aria-label",`${lives} vidas`);
+}
+
+function renderQ(){
+  const lv=LEVELS[L], it=lv.items[Q]; answered=false; order=[];
+  document.documentElement.style.setProperty("--c",`var(${lv.c})`);
+  hud();
+  $("#hFill").style.width=(Q/lv.items.length*100)+"%";
+  $("#lvlIntro").innerHTML=lv.intro;
+  $("#fb").className="fb"; $("#fb").innerHTML=""; $("#next").classList.add("hide");
+  const P=$("#prompt"), A=$("#area");
+  if(it.k==="calc"){
+    it.ans = calcCase(it.e,it.j,it.a);
+    const base=it.ans;
+    // distractores: promedio simple y variaciones
+    const simple=(it.e+it.j+it.a)/3;
+    let opts=[base, simple, base+.15, base-.15].map(x=>Math.round(x*100)/100);
+    opts=[...new Set(opts.map(x=>x.toFixed(2)))].map(Number);
+    while(opts.length<4) opts.push(Math.round((base+.1*opts.length)*100)/100);
+    opts.sort(()=>Math.random()-.5);
+    it.o=opts.map(fmt); it.c=opts.findIndex(x=>Math.abs(x-Math.round(base*100)/100)<.001);
+    it.w=`Estudiantes ${fmt(it.e)} × 50 % = ${fmt(it.e*.5)}; jefe inmediato ${fmt(it.j)} × 25 % = ${fmt(it.j*.25)}; autoevaluación ${fmt(it.a)} × 25 % = ${fmt(it.a*.25)}. Total: ${fmt(base)}. Ojo: el promedio simple (${fmt(simple)}) no sirve porque las fuentes no pesan igual.`;
+    P.innerHTML=`<span class="tag">Calcula el promedio final</span><div>Estos son los resultados de un profesor, en escala de 1 a 5. ¿Cuál es su promedio 360°?</div>
+      <div class="data">${[["Estudiantes",it.e,"--est","50 %"],["Jefe inmediato",it.j,"--jef","25 %"],["Autoevaluación",it.a,"--aut","25 %"]].map(x=>`<div style="--dc:var(${x[2]})">${x[0]} · ${x[3]}<b>${fmt(x[1])}</b></div>`).join("")}</div>`;
+    choices(it.o, "cols2");
+  } else if(it.k==="choice"){
+    P.innerHTML=`<span class="tag">Pregunta</span><div>${it.t}</div>`; choices(it.o);
+  } else if(it.k==="dim"){
+    P.innerHTML=`<span class="tag">¿Qué dimensión?</span><div class="quote">${it.t}</div>`;
+    A.innerHTML=`<div class="opts cols3">${DIM.map((d,i)=>`<button class="opt big" data-i="${i}" style="--dc:var(${d[2]})">${d[0]}<small>${d[1]}</small></button>`).join("")}</div>`;
+    bindOpts();
+  } else if(it.k==="tf"){
+    P.innerHTML=`<span class="tag">¿Mito o realidad?</span><div class="quote">${it.t}</div>`;
+    A.innerHTML=`<div class="opts cols2"><button class="opt big" data-i="0" style="--dc:var(--ok)">Realidad<small>Así funciona</small></button><button class="opt big" data-i="1" style="--dc:var(--bad)">Mito<small>Idea equivocada</small></button></div>`;
+    bindOpts();
+  } else if(it.k==="order"){
+    P.innerHTML=`<span class="tag">Ordena</span><div>${it.t}</div>`;
+    const shuffled = it.items.map((x,i)=>({x,i})).sort(()=>Math.random()-.5);
+    if(shuffled.every((s,k)=>s.i===k)) shuffled.reverse();
+    A.innerHTML=`<div class="slots">${it.items.map((_,k)=>`<div class="slot" data-k="${k}"><span class="num">${k+1}</span><span class="txt">Toca un elemento abajo</span></div>`).join("")}</div>
+      <div class="pool">${shuffled.map(s=>`<button class="chipbtn" data-i="${s.i}">${s.x}</button>`).join("")}</div>
+      <div class="order-actions"><button class="ghost" id="undo">Deshacer</button><button class="primary" id="check" disabled>Comprobar</button></div>`;
+    A.querySelectorAll(".chipbtn").forEach(b=>b.onclick=()=>{ if(answered) return; order.push(+b.dataset.i); b.disabled=true; paintSlots(); });
+    $("#undo").onclick=()=>{ if(answered||!order.length) return; const last=order.pop(); A.querySelector(`.chipbtn[data-i="${last}"]`).disabled=false; paintSlots(); };
+    $("#check").onclick=checkOrder;
+  }
+  P.classList.remove("pop"); void P.offsetWidth; P.classList.add("pop");
+}
+function paintSlots(){
+  const it=LEVELS[L].items[Q];
+  document.querySelectorAll(".slot").forEach((s,k)=>{
+    const has=order[k]!==undefined;
+    s.classList.toggle("filled",has);
+    s.querySelector(".txt").textContent = has ? it.items[order[k]] : "Toca un elemento abajo";
+  });
+  $("#check").disabled = order.length!==it.items.length;
+}
+function checkOrder(){
+  const it=LEVELS[L].items[Q];
+  const ok = order.every((v,k)=>v===k);
+  document.querySelectorAll(".slot").forEach((s,k)=>s.classList.add(order[k]===k?"correct":"wrong"));
+  $("#undo").disabled=true; $("#check").disabled=true;
+  resolve(ok, it.items.join(" → "), it);
+}
+function choices(opts, cls=""){
+  $("#area").innerHTML=`<div class="opts ${cls}">${opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${o}</span></button>`).join("")}</div>`;
+  bindOpts();
+}
+function bindOpts(){ document.querySelectorAll("#area .opt").forEach(b=>b.onclick=()=>pick(+b.dataset.i)); }
+
+function pick(i){
+  if(answered) return;
+  const lv=LEVELS[L], it=lv.items[Q];
+  document.querySelectorAll("#area .opt").forEach(b=>{ const bi=+b.dataset.i; b.disabled=true; if(bi===it.c) b.classList.add("correct"); else if(bi===i) b.classList.add("wrong"); });
+  const labels = it.k==="dim" ? DIM.map(d=>d[0]) : it.k==="tf" ? ["Realidad","Mito"] : it.o;
+  resolve(i===it.c, labels[it.c], it);
+}
+
+function resolve(ok, rightText, it){
+  answered=true;
+  const lv=LEVELS[L]; let pts=0;
+  if(ok){ streak++; maxStreak=Math.max(maxStreak,streak); pts=10+(streak>=3?5:0); score+=pts; results[L].ok++; results[L].pts+=pts; }
+  else { streak=0; lives--; misses.push({lvl:lv.name,q:(it.t||"Cálculo del promedio 360°").replace(/[“”]/g,""),a:rightText,why:it.w}); }
+  const fb=$("#fb");
+  fb.className="fb show "+(ok?"ok":"no");
+  fb.innerHTML=`<span class="pts">${ok?`+${pts}`:"−1 ❤️"}</span><strong>${ok?(pts>10?"¡Correcto, con bono de racha!":"¡Correcto!"):`La respuesta es: ${rightText}`}</strong>${it.w}`;
+  hud();
+  $("#hFill").style.width=((Q+1)/lv.items.length*100)+"%";
+  const nx=$("#next");
+  if(lives<=0){ nx.textContent="Ver resultado"; nx.onclick=failLevel; }
+  else { nx.textContent = Q+1<lv.items.length?"Siguiente":"Ver resultado del nivel"; nx.onclick=()=>{ if(Q+1<lv.items.length){Q++;renderQ();} else levelEnd(); }; }
+  nx.classList.remove("hide"); nx.focus();
+}
+
+function failLevel(){
+  const lv=LEVELS[L], el=$("#lvlEnd");
+  el.style.setProperty("--c",`var(${lv.c})`);
+  el.innerHTML=`<p class="muted">Nivel ${L+1}</p><div class="badge" aria-hidden="true">💡</div><h2>Te quedaste sin vidas</h2>
+   <p>Cada error es una pista para aprender. Revisa las explicaciones e inténtalo de nuevo: tu puntaje vuelve al que tenías al iniciar este nivel.</p>
+   <div class="actions"><button class="primary" id="retry">Repetir el nivel ${L+1}</button></div>`;
+  show("lvlEnd");
+  $("#retry").focus();
+  $("#retry").onclick=()=>{ score=levelScoreStart; startLevel(); };
+}
+
+function levelEnd(){
+  const lv=LEVELS[L], r=results[L], pct=r.ok/r.total;
+  const msg = pct===1?"¡Nivel perfecto!":pct>=.75?"Muy bien, dominas este tema.":"Superaste el nivel; vale la pena repasar los detalles.";
+  const el=$("#lvlEnd"); el.style.setProperty("--c",`var(${lv.c})`);
+  el.innerHTML=`<p class="muted">Nivel ${L+1} completado</p><div class="badge" aria-hidden="true">${lv.icon}</div><h2>${lv.name}</h2>
+   <p>${msg} Acertaste ${r.ok} de ${r.total} y sumaste ${r.pts} puntos.</p><p class="muted">Puntaje acumulado: ${score}</p>
+   <div class="actions"><button class="primary" id="lvNext">${L+1<LEVELS.length?`Ir al nivel ${L+2}: ${LEVELS[L+1].name}`:"Ver resultado final"}</button></div>`;
+  show("lvlEnd");
+  $("#lvNext").focus();
+  $("#lvNext").onclick=()=>{ if(L+1<LEVELS.length){ L++; startLevel(); } else final(); };
+}
+
+function final(){
+  saveBest();
+  const total=LEVELS.reduce((a,l)=>a+l.items.length,0), ok=results.reduce((a,r)=>a+r.ok,0), pct=ok/total;
+  const medal = pct>=.9?["🥇","Oro","Sabes leer tu evaluación y convertirla en un plan de crecimiento."]:pct>=.7?["🥈","Plata","Comprendes bien la evaluación; repasa los detalles que se te escaparon."]:["🥉","Bronce","Ya tienes las bases. Un repaso te ayudará a aprovechar mejor tus resultados."];
+  const el=$("#end"); el.style.setProperty("--c","var(--aut)");
+  el.innerHTML=`<p class="muted">Reto completado</p><div class="badge" aria-hidden="true">${medal[0]}</div><h2>Medalla de ${medal[1]}</h2>
+   <div class="score-big">${score}</div><p class="muted">puntos · ${ok} de ${total} aciertos · racha máxima de ${maxStreak}</p><p>${medal[2]}</p>
+   <ul class="sum">${LEVELS.map((l,i)=>`<li style="--c:var(${l.c})"><span>${l.icon} ${l.name}</span><strong>${results[i].ok} de ${results[i].total}</strong></li>`).join("")}</ul>
+   ${misses.length?`<div class="review"><h2>Para repasar</h2>${misses.map(m=>`<details><summary>${m.q}</summary><p><strong>Respuesta:</strong> ${m.a}</p><p>${m.why}</p></details>`).join("")}</div>`:`<p><strong>¡Sin errores!</strong></p>`}
+   <div class="actions"><button class="primary" id="again">Jugar de nuevo</button><button class="ghost" id="home">Volver al inicio</button></div>`;
+  show("end");
+  $("#again").onclick=startGame;
+  $("#home").onclick=()=>{ $("#best").textContent=bestText(); show("start"); };
+}
+
+$("#go").onclick=startGame;
+document.addEventListener("keydown",e=>{
+  if($("#game").classList.contains("hide")||answered) return;
+  const n=parseInt(e.key,10), btns=document.querySelectorAll("#area .opt");
+  if(btns.length && n>=1 && n<=btns.length) pick(n-1);
+});
+</script>
+</body>
+</html>

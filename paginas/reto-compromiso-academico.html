@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto del compromiso académico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#16313D; --muted:#566771; --line:#D5DEE0; --soft:#E8EEEF;
+  --doc:#C98A0B; --inv:#2C6A9E; --pro:#2F7F4F; --ges:#7E4596; --tie:#B4462F; --eva:#0F7C82;
+  --ok:#2F7F4F; --okbg:#E3F2E8; --bad:#B4462F; --badbg:#F8E6E1; --focus:#2C6A9E;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+    --doc:#E8B33C; --inv:#6FA9DA; --pro:#6CC08D; --ges:#C08AD6; --tie:#E58A72; --eva:#5CC3C8;
+    --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+  --doc:#E8B33C; --inv:#6FA9DA; --pro:#6CC08D; --ges:#C08AD6; --tie:#E58A72; --eva:#5CC3C8;
+  --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+h1,h2,.display{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif}
+h1{font-weight:800;font-size:clamp(2rem,7vw,3.2rem);line-height:1.02;letter-spacing:-.02em;margin:.5rem 0 .75rem}
+h2{font-weight:700;font-size:1.5rem;line-height:1.2;margin:0 0 .5rem}
+p{margin:0 0 .8rem}
+.muted{color:var(--muted)}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.primary{background:var(--ink);color:var(--bg);border:0;border-radius:12px;padding:.85rem 1.4rem;font-weight:700;font-size:1.05rem}
+.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:.75rem 1.2rem}
+/* HUD */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:4;background:var(--bg);padding:.6rem 0 .8rem;border-bottom:1px solid var(--line);margin-bottom:1.25rem}
+.hud-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.lvl{font-weight:700}
+.stat{display:flex;align-items:baseline;gap:.3rem;margin-left:auto}
+.stat b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:1.5rem;font-weight:800}
+.streak{font-size:.9rem;color:var(--muted)}
+.streak.hot{color:var(--doc);font-weight:700}
+.track{height:8px;background:var(--soft);border-radius:99px;margin-top:.6rem;overflow:hidden}
+.fill{height:100%;background:var(--c,var(--ink));width:0;transition:width .3s}
+/* Inicio */
+.levels{display:grid;gap:.6rem;margin:1.25rem 0 1.5rem;padding:0;list-style:none}
+.levels li{display:grid;grid-template-columns:2.4rem 1fr;gap:.8rem;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:.75rem 1rem}
+.levels .n{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:1.5rem;color:var(--c);text-align:center}
+.levels small{display:block;color:var(--muted)}
+.best{font-size:.92rem;color:var(--muted);margin-top:.75rem}
+/* Pregunta */
+.intro-lvl{border-left:6px solid var(--c);padding:.25rem 0 .25rem 1rem;margin-bottom:1.25rem}
+.prompt{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:1.5rem 1.4rem;min-height:7.5rem;display:flex;align-items:center;font-size:1.2rem;font-weight:700;line-height:1.35}
+.prompt.scen{font-weight:400;font-size:1.08rem}
+.opts{display:grid;gap:.6rem;margin-top:1rem}
+.opts.two{grid-template-columns:1fr 1fr}
+.opts.four{grid-template-columns:1fr 1fr}
+.opt{text-align:left;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:.9rem 1rem;line-height:1.3;display:flex;gap:.6rem;align-items:flex-start}
+.opt .k{flex:0 0 auto;width:1.6rem;height:1.6rem;border-radius:6px;background:var(--soft);display:grid;place-items:center;font-size:.85rem;font-weight:700;color:var(--muted)}
+.opt.big{justify-content:center;text-align:center;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:1.25rem;padding:1.1rem}
+.opt.big small{display:block;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:400;font-size:.82rem;color:var(--muted)}
+.opt:not([disabled]):hover{border-color:var(--ink)}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt[disabled]{cursor:default}
+.dot{display:inline-block;width:.7rem;height:.7rem;border-radius:50%;background:var(--dc);margin-top:.3rem;flex:0 0 auto}
+.fb{margin-top:1rem;border-radius:12px;padding:1rem 1.1rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--okbg);border:1.5px solid var(--ok)}
+.fb.no{background:var(--badbg);border:1.5px solid var(--bad)}
+.fb strong{display:block;margin-bottom:.25rem}
+.fb .pts{float:right;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800}
+.next-row{display:flex;justify-content:flex-end;margin-top:1rem}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+/* Resultado de nivel y final */
+.badge{display:inline-grid;place-items:center;width:5.5rem;height:5.5rem;border-radius:50%;border:5px solid var(--c);font-size:2.4rem;margin:.5rem 0 1rem;background:var(--surface)}
+.score-big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(3rem,12vw,5rem);line-height:1;margin:.25rem 0}
+.sum{list-style:none;padding:0;margin:1.25rem 0;display:grid;gap:.5rem}
+.sum li{display:flex;justify-content:space-between;gap:1rem;background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:.7rem 1rem}
+.review{margin:1.5rem 0}
+.review details{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin-bottom:.5rem}
+.review summary{cursor:pointer;font-weight:700}
+.review p{margin:.5rem 0 0;font-size:.95rem}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.hide{display:none!important}
+@media (max-width:520px){.opts.four{grid-template-columns:1fr}.prompt{font-size:1.1rem}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Pantalla de inicio -->
+  <section id="start">
+    <p class="muted">Universidad de Manizales · Compromisos académicos</p>
+    <h1>Reto del compromiso académico</h1>
+    <p>Pon a prueba lo que sabes sobre tu compromiso en cuatro niveles. Cada acierto suma 10 puntos y, si encadenas tres o más, ganas 5 puntos extra por respuesta. Después de cada pregunta verás por qué la respuesta es la correcta.</p>
+    <ul class="levels" id="levelList"></ul>
+    <button class="primary" id="go">Comenzar el reto</button>
+    <p class="best" id="best"></p>
+  </section>
+
+  <!-- Juego -->
+  <section id="game" class="hide">
+    <div class="hud">
+      <div class="hud-row">
+        <span class="lvl" id="hLvl"></span>
+        <span class="muted" id="hQ"></span>
+        <span class="streak" id="hStreak"></span>
+        <span class="stat"><b id="hScore">0</b><span class="muted">puntos</span></span>
+      </div>
+      <div class="track"><div class="fill" id="hFill"></div></div>
+    </div>
+    <div id="lvlIntro" class="intro-lvl"></div>
+    <div class="prompt" id="prompt" aria-live="polite"></div>
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb" role="status"></div>
+    <div class="next-row"><button class="primary hide" id="next">Siguiente</button></div>
+  </section>
+
+  <!-- Fin de nivel -->
+  <section id="lvlEnd" class="hide"></section>
+
+  <!-- Final -->
+  <section id="end" class="hide"></section>
+</div>
+
+<script>
+const LEVELS = [
+ { name:"¿Es o no es?", c:"--eva", icon:"🧭", desc:"Distingue qué es el compromiso académico y qué no.",
+   intro:"Decide si cada frase describe lo que <strong>es</strong> el compromiso académico o lo que <strong>no es</strong>.",
+   type:"two", labels:["Es","No es"], sub:["el compromiso","el compromiso"],
+   items:[
+    ["Una planeación de toda la labor profesoral del periodo",0,"El compromiso organiza toda la labor del periodo: docencia, investigación, proyección social y gestión."],
+    ["Solo un horario de clases",1,"Es mucho más que un horario: reconoce también preparar, evaluar, asesorar, investigar y participar."],
+    ["Una forma de reconocer el tiempo de actividades que muchas veces no se ven",0,"Preparar, evaluar y asesorar son parte de la labor y el compromiso las hace visibles."],
+    ["Una simple sumatoria de horas",1,"No se trata de sumar horas, sino de acordar cómo se distribuyen las responsabilidades con sentido."],
+    ["Un acuerdo que articula responsabilidades con las necesidades del programa y la facultad",0,"Es un acuerdo concertado que conecta lo que hace el profesor con lo que necesita su programa."],
+    ["Un documento que se recibe sin conversación",1,"El Estatuto reconoce el derecho del profesor a participar en su concertación (art. 33, literal d)."],
+    ["Una base para evidenciar lo realizado y mejorar continuamente",0,"Compromiso y evaluación forman un ciclo: planear, desarrollar, evidenciar y mejorar."],
+    ["Un trámite que termina cuando se aprueba",1,"Se ajusta durante el periodo según las dinámicas y particularidades de cada programa."]
+   ]},
+ { name:"HCD o HCC", c:"--tie", icon:"⏱️", desc:"Clasifica cada actividad según el tipo de tiempo.",
+   intro:"<strong>HCD</strong> son horas de contacto directo. <strong>HCC</strong> son horas complementarias al contacto. ¿Dónde aparece cada actividad?",
+   type:"two", labels:["HCD","HCC"], sub:["Contacto directo","Complementarias"],
+   items:[
+    ["Dar la clase a un grupo",0,"La clase es interacción directa con los estudiantes: HCD."],
+    ["Planear y preparar la clase",1,"La preparación es tiempo complementario que sostiene la clase: HCC."],
+    ["Dinamizar un foro en un curso virtual",0,"En la virtualidad, la interacción asincrónica también es contacto directo. Asincronía no es ausencia."],
+    ["Calificar y retroalimentar trabajos",1,"La evaluación y el seguimiento se reconocen como HCC."],
+    ["Asesorar una tesis doctoral",0,"La asesoría de tesis doctoral se reconoce como contacto directo, hasta 2 horas semanales por tesis."],
+    ["Participar en formación docente",1,"La formación docente es HCC: mínimo 32 horas semestrales, es decir, 2 semanales."],
+    ["Un encuentro sincrónico por videoconferencia",0,"La interacción sincrónica en un curso virtual es contacto directo."],
+    ["Participar en la autoevaluación del programa",1,"La autoevaluación es gestión de calidad y aparece como HCC."],
+    ["Coordinar un semillero de investigación",0,"Al líder del semillero se le reconocen 2 horas semanales de contacto directo."],
+    ["Desarrollar un proyecto de desarrollo social",1,"Los proyectos de desarrollo social se reconocen como HCC."]
+   ]},
+ { name:"Cuatro dimensiones", c:"--inv", icon:"🧩", desc:"Ubica cada actividad en su dimensión de la labor.",
+   intro:"La labor profesoral tiene cuatro dimensiones que se alimentan entre sí. ¿A cuál pertenece cada actividad?",
+   type:"four", labels:["Docencia","Investigación","Proyección social","Gestión académica"], dots:["--doc","--inv","--pro","--ges"],
+   items:[
+    ["Actualizar el syllabus de un curso",0,"El syllabus organiza la planeación del curso: es docencia."],
+    ["Liderar un grupo de investigación categorizado",1,"Es gestión de la investigación, una de las categorías de la investigación."],
+    ["Diseñar un diplomado de educación continuada",2,"La educación continuada es uno de los componentes de la proyección social."],
+    ["Representar a los profesores en el Consejo Académico",3,"Las representaciones son parte de la gestión académica."],
+    ["Acompañar a estudiantes en su práctica en una empresa",2,"Las prácticas estudiantiles integran la proyección social: llevan el conocimiento al entorno y traen de él preguntas."],
+    ["Asesorar una tesis de maestría",1,"Es formación de alto nivel, una categoría de la investigación."],
+    ["Participar en el proceso de acreditación del programa",3,"Los procesos de calidad y autoevaluación son gestión académica."],
+    ["Crear ambientes de aprendizaje que promuevan el pensamiento crítico",0,"Es el núcleo de la docencia: acciones pedagógicas y didácticas que fortalecen la formación."]
+   ]},
+ { name:"Situaciones reales", c:"--pro", icon:"🎯", desc:"Decide qué hacer en casos del día a día.",
+   intro:"Lee cada situación y elige la respuesta que corresponde a las orientaciones.",
+   type:"four", scen:true,
+   items:[
+    ["¿Por qué se construye un compromiso nuevo en cada periodo?",["Porque cambian asignaturas, grupos, estudiantes, proyectos y necesidades del programa","Porque el Estatuto exige repetir el mismo documento","Porque cambia la categoría del profesor cada semestre","Porque así se controla la asistencia"],0,"La vida académica cambia de un periodo a otro y el compromiso recoge esa realidad, en coherencia con los planes de estudio."],
+    ["Recibes tu compromiso y una actividad no coincide con lo acordado. ¿Qué haces?",["Aceptarlo y esperar al siguiente periodo","Revisarlo con calma y conversar la diferencia con la dirección de programa antes de aceptarlo","Rechazarlo sin más","Modificarlo tú mismo en la plataforma"],1,"Aceptar significa reconocer lo concertado. Si algo no corresponde, se conversa con la dirección del programa."],
+    ["¿Quiénes son los interlocutores naturales para concertar el compromiso?",["La oficina de talento humano","Los estudiantes del curso","La dirección de programa o la decanatura, según el caso","El Consejo Superior"],2,"La dirección de programa o la decanatura son los interlocutores de esa conversación."],
+    ["A mitad del periodo, uno de tus grupos no se abre por falta de estudiantes. ¿Qué ocurre?",["El compromiso queda igual","Debes reponer las horas con otro curso por tu cuenta","Se pierde todo el compromiso","El compromiso se ajusta de forma concertada"],3,"El compromiso no termina al aprobarse: se ajusta a las dinámicas del programa, siempre de manera concertada."],
+    ["Según el Estatuto de los Académicos (2024), ¿con base en qué se organiza la jornada de trabajo?",["En los compromisos académicos","En el horario de la sede","En el número de estudiantes","En la evaluación docente"],0,"El artículo 11, parágrafo 2, señala que la jornada se organiza con base en los compromisos académicos."],
+    ["¿Qué busca el compromiso según las Orientaciones institucionales?",["Asignar la mayor cantidad de horas de clase","Una distribución equilibrada y transparente, con criterios conocidos y sensible a cada programa y profesor","Uniformar la labor de todos los profesores","Reemplazar la evaluación docente"],1,"Busca equilibrio y transparencia, atendiendo las necesidades del programa y la trayectoria, capacidades y perfil de cada profesor."]
+   ]}
+];
+
+const $ = s => document.querySelector(s);
+const show = id => ["start","game","lvlEnd","end"].forEach(s => $("#"+s).classList.toggle("hide", s!==id));
+let L=0, Q=0, score=0, streak=0, maxStreak=0, answered=false, results=[], misses=[];
+const STORE="reto-compromiso-best";
+
+function bestText(){
+  try{ const b = JSON.parse(localStorage.getItem(STORE)||"null"); return b ? `Tu mejor puntaje: ${b} puntos` : ""; }catch(e){ return ""; }
+}
+function saveBest(){ try{ const b = JSON.parse(localStorage.getItem(STORE)||"0"); if(score>b) localStorage.setItem(STORE, JSON.stringify(score)); }catch(e){} }
+
+$("#levelList").innerHTML = LEVELS.map((l,i)=>`<li style="--c:var(${l.c})"><span class="n">${i+1}</span><span><strong>${l.name}</strong><small>${l.desc} ${l.items.length} preguntas.</small></span></li>`).join("");
+$("#best").textContent = bestText();
+
+function startGame(){ L=0; score=0; streak=0; maxStreak=0; results=[]; misses=[]; startLevel(); }
+function startLevel(){ Q=0; results[L]={ok:0,total:LEVELS[L].items.length,pts:0}; show("game"); renderQ(); }
+
+function renderQ(){
+  const lv = LEVELS[L], it = lv.items[Q];
+  answered=false;
+  document.documentElement.style.setProperty("--c", `var(${lv.c})`);
+  $("#hLvl").textContent = `Nivel ${L+1}: ${lv.name}`;
+  $("#hQ").textContent = `Pregunta ${Q+1} de ${lv.items.length}`;
+  $("#hScore").textContent = score;
+  $("#hStreak").textContent = streak>=2 ? `🔥 Racha de ${streak}` : "";
+  $("#hStreak").classList.toggle("hot", streak>=3);
+  $("#hFill").style.width = (Q/lv.items.length*100)+"%";
+  $("#lvlIntro").innerHTML = lv.intro;
+  $("#prompt").textContent = it[0];
+  $("#prompt").classList.toggle("scen", !!lv.scen);
+  const labels = lv.scen ? it[1] : lv.labels;
+  const opts = $("#opts");
+  opts.className = "opts " + (lv.type==="two" ? "two" : "four");
+  opts.innerHTML = labels.map((lab,i)=>{
+    if(lv.type==="two") return `<button class="opt big" data-i="${i}">${lab}<small>${lv.sub[i]}</small></button>`;
+    const dot = lv.dots ? `<span class="dot" style="--dc:var(${lv.dots[i]})"></span>` : "";
+    return `<button class="opt" data-i="${i}"><span class="k">${i+1}</span>${dot}<span>${lab}</span></button>`;
+  }).join("");
+  opts.querySelectorAll(".opt").forEach(b => b.onclick = () => answer(+b.dataset.i));
+  $("#fb").className="fb"; $("#fb").innerHTML="";
+  $("#next").classList.add("hide");
+  $("#prompt").classList.remove("pop"); void $("#prompt").offsetWidth; $("#prompt").classList.add("pop");
+}
+
+function answer(i){
+  if(answered) return; answered=true;
+  const lv = LEVELS[L], it = lv.items[Q];
+  const correct = lv.scen ? it[2] : it[1];
+  const why = lv.scen ? it[3] : it[2];
+  const ok = i===correct;
+  let pts = 0;
+  if(ok){ streak++; maxStreak=Math.max(maxStreak,streak); pts = 10 + (streak>=3?5:0); score+=pts; results[L].ok++; results[L].pts+=pts; }
+  else { streak=0; misses.push({lvl:lv.name, q:it[0], a:(lv.scen?it[1]:lv.labels)[correct], why}); }
+  document.querySelectorAll(".opt").forEach(b => {
+    const bi=+b.dataset.i; b.disabled=true;
+    if(bi===correct) b.classList.add("correct");
+    else if(bi===i) b.classList.add("wrong");
+  });
+  const fb = $("#fb");
+  fb.className = "fb show " + (ok?"ok":"no");
+  const right = (lv.scen?it[1]:lv.labels)[correct];
+  fb.innerHTML = `<span class="pts">${ok?`+${pts}`:"+0"}</span><strong>${ok ? (pts>10?"¡Correcto, y con bono de racha!":"¡Correcto!") : `La respuesta es: ${right}`}</strong>${why}`;
+  $("#hScore").textContent = score;
+  $("#hStreak").textContent = streak>=2 ? `🔥 Racha de ${streak}` : "";
+  $("#hStreak").classList.toggle("hot", streak>=3);
+  $("#hFill").style.width = ((Q+1)/lv.items.length*100)+"%";
+  const nx = $("#next");
+  nx.textContent = Q+1<lv.items.length ? "Siguiente" : "Ver resultado del nivel";
+  nx.classList.remove("hide"); nx.focus();
+}
+
+$("#next").onclick = () => { const lv=LEVELS[L]; if(Q+1<lv.items.length){ Q++; renderQ(); } else levelEnd(); };
+
+function levelEnd(){
+  const lv=LEVELS[L], r=results[L], pct=r.ok/r.total;
+  const msg = pct===1 ? "Nivel perfecto." : pct>=.75 ? "Muy bien, dominas este tema." : pct>=.5 ? "Vas por buen camino." : "Vale la pena repasar este tema.";
+  const el=$("#lvlEnd");
+  el.style.setProperty("--c",`var(${lv.c})`);
+  el.innerHTML = `<p class="muted">Nivel ${L+1} completado</p>
+    <div class="badge" aria-hidden="true">${pct>=.75?lv.icon:"📘"}</div>
+    <h2>${lv.name}</h2>
+    <p>${msg} Acertaste ${r.ok} de ${r.total} y sumaste ${r.pts} puntos.</p>
+    <p class="muted">Puntaje acumulado: ${score}</p>
+    <div class="actions">${L+1<LEVELS.length?`<button class="primary" id="lvNext">Ir al nivel ${L+2}: ${LEVELS[L+1].name}</button>`:`<button class="primary" id="lvNext">Ver resultado final</button>`}</div>`;
+  show("lvlEnd");
+  $("#lvNext").focus();
+  $("#lvNext").onclick = () => { if(L+1<LEVELS.length){ L++; startLevel(); } else final(); };
+}
+
+function final(){
+  saveBest();
+  const total = LEVELS.reduce((a,l)=>a+l.items.length,0);
+  const ok = results.reduce((a,r)=>a+r.ok,0);
+  const pct = ok/total;
+  const medal = pct>=.9 ? ["🥇","Oro","Conoces a fondo tu compromiso académico."] : pct>=.7 ? ["🥈","Plata","Tienes una comprensión sólida; repasa los detalles que se te escaparon."] : pct>=.5 ? ["🥉","Bronce","Tienes las bases; un repaso te ayudará a leer tu compromiso con más seguridad."] : ["📘","Aprendiz","Este es un buen punto de partida. Revisa las respuestas y vuelve a intentarlo."];
+  const el=$("#end");
+  el.style.setProperty("--c","var(--doc)");
+  el.innerHTML = `<p class="muted">Reto completado</p>
+    <div class="badge" aria-hidden="true">${medal[0]}</div>
+    <h2>Medalla de ${medal[1]}</h2>
+    <div class="score-big">${score}</div>
+    <p class="muted">puntos · ${ok} de ${total} aciertos · racha máxima de ${maxStreak}</p>
+    <p>${medal[2]}</p>
+    <ul class="sum">${LEVELS.map((l,i)=>`<li style="--c:var(${l.c})"><span>${results[i].ok/results[i].total>=.75?l.icon+" ":""}${l.name}</span><strong>${results[i].ok} de ${results[i].total}</strong></li>`).join("")}</ul>
+    ${misses.length?`<div class="review"><h2>Para repasar</h2>${misses.map(m=>`<details><summary>${m.q}</summary><p><strong>Respuesta:</strong> ${m.a}</p><p>${m.why}</p></details>`).join("")}</div>`:`<p><strong>¡Sin errores!</strong> Respondiste todas las preguntas correctamente.</p>`}
+    <div class="actions"><button class="primary" id="again">Jugar de nuevo</button><button class="ghost" id="home">Volver al inicio</button></div>`;
+  show("end");
+  $("#again").onclick = startGame;
+  $("#home").onclick = () => { $("#best").textContent = bestText(); show("start"); };
+}
+
+$("#go").onclick = startGame;
+
+document.addEventListener("keydown", e => {
+  if($("#game").classList.contains("hide")) return;
+  if(!answered){
+    const n = parseInt(e.key,10);
+    const count = document.querySelectorAll(".opt").length;
+    if(n>=1 && n<=count){ answer(n-1); }
+  }
+});
+</script>
+</body>
+</html>

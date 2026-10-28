@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto: componentes de la docencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#16313D; --muted:#566771; --line:#D5DEE0; --soft:#E8EEEF;
+  --a:#C98A0B; --b:#2C6A9E; --c:#2F7F4F; --d:#7E4596; --e:#B4462F; --f:#0F7C82;
+  --ok:#2F7F4F; --okbg:#E3F2E8; --bad:#B4462F; --badbg:#F8E6E1; --focus:#2C6A9E; --sel:#2C6A9E; --selbg:#E2ECF5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+    --a:#E8B33C; --b:#6FA9DA; --c:#6CC08D; --d:#C08AD6; --e:#E58A72; --f:#5CC3C8;
+    --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA; --sel:#6FA9DA; --selbg:#1B3346;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47; --soft:#1D323B;
+  --a:#E8B33C; --b:#6FA9DA; --c:#6CC08D; --d:#C08AD6; --e:#E58A72; --f:#5CC3C8;
+  --ok:#6CC08D; --okbg:#173326; --bad:#E58A72; --badbg:#3A221C; --focus:#6FA9DA; --sel:#6FA9DA; --selbg:#1B3346;
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+h1{font-weight:900;font-size:clamp(2rem,7vw,3.1rem);line-height:1.04;letter-spacing:-.02em;margin:.4rem 0 .75rem}
+h2{font-weight:900;font-size:1.5rem;line-height:1.2;margin:0 0 .5rem}
+p{margin:0 0 .8rem}
+.muted{color:var(--muted)}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.primary{background:var(--ink);color:var(--bg);border:0;border-radius:12px;padding:.85rem 1.4rem;font-weight:700}
+.primary[disabled]{opacity:.35;cursor:default}
+.ghost{background:transparent;border:2px solid var(--line);border-radius:12px;padding:.75rem 1.2rem}
+/* Portada: seis componentes */
+.six{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1.25rem 0}
+.six div{background:var(--surface);border:1.5px solid var(--line);border-top:6px solid var(--k);border-radius:10px;padding:.6rem .7rem;font-weight:500;font-size:.92rem;line-height:1.25}
+.levels{display:grid;gap:.55rem;margin:1rem 0 1.5rem;padding:0;list-style:none}
+.levels li{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem}
+.levels .n{font-weight:900;font-size:1.4rem;text-align:center}
+.levels small{display:block;color:var(--muted)}
+/* HUD */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:.6rem 0 .8rem;border-bottom:1px solid var(--line);margin-bottom:1.25rem}
+.hud-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.lvl{font-weight:700}
+.stat{margin-left:auto;display:flex;align-items:baseline;gap:.3rem}
+.stat b{font-weight:900;font-size:1.5rem}
+.lives{letter-spacing:.1em}
+.streak{font-size:.9rem;font-weight:700;color:var(--a)}
+.track{height:8px;background:var(--soft);border-radius:99px;margin-top:.55rem;overflow:hidden}
+.fill{height:100%;background:var(--ink);width:0;transition:width .3s}
+.intro-lvl{border-left:6px solid var(--ink);padding:.2rem 0 .2rem 1rem;margin-bottom:1.1rem}
+.prompt{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem;font-size:1.12rem;line-height:1.4;font-weight:500}
+.prompt .tag{display:block;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+.prompt .big{font-size:1.25rem;font-weight:700}
+.opts{display:grid;gap:.55rem;margin-top:1rem}
+.cols2{grid-template-columns:1fr 1fr}
+.cols3{grid-template-columns:repeat(3,1fr)}
+.opt{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:.85rem 1rem;line-height:1.3;display:flex;gap:.6rem;align-items:flex-start}
+.opt .k{flex:0 0 auto;width:1.55rem;height:1.55rem;border-radius:6px;background:var(--soft);display:grid;place-items:center;font-size:.82rem;font-weight:700;color:var(--muted)}
+.opt.bin{flex-direction:column;align-items:center;text-align:center;font-weight:900;font-size:1.2rem;border-top:6px solid var(--k,var(--line));padding:1rem .5rem}
+.opt.bin small{font-weight:400;font-size:.8rem;color:var(--muted)}
+.opt:not([disabled]):hover{border-color:var(--ink)}
+.opt.picked{border-color:var(--sel);background:var(--selbg)}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.missed{border-style:dashed;border-color:var(--ok)}
+.opt[disabled]{cursor:default}
+.box{width:1.3rem;height:1.3rem;border:2px solid var(--line);border-radius:5px;flex:0 0 auto;display:grid;place-items:center;font-size:.8rem;margin-top:.05rem}
+.opt.picked .box{background:var(--sel);border-color:var(--sel);color:var(--surface)}
+/* Emparejar */
+.match{display:grid;grid-template-columns:1fr 1.4fr;gap:.6rem;margin-top:1rem;align-items:start}
+.col{display:grid;gap:.5rem}
+.col h3{margin:0 0 .1rem;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.mcard{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:.7rem .85rem;line-height:1.3;font-size:.95rem;min-height:3.2rem}
+.mcard.comp{font-weight:700;border-left:6px solid var(--k)}
+.mcard.sel{border-color:var(--sel);background:var(--selbg)}
+.mcard.done{border-color:var(--ok);background:var(--okbg);opacity:.7;cursor:default}
+.mcard.shake{animation:shake .35s}
+@keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.fb{margin-top:1rem;border-radius:12px;padding:.95rem 1.05rem}
+.fb.ok{background:var(--okbg);border:1.5px solid var(--ok)}
+.fb.no{background:var(--badbg);border:1.5px solid var(--bad)}
+.fb.info{background:var(--surface);border:1.5px solid var(--line)}
+.fb strong{display:block;margin-bottom:.2rem}
+.fb .pts{float:right;font-weight:900}
+.row-end{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.badge{display:inline-grid;place-items:center;width:5.5rem;height:5.5rem;border-radius:50%;border:5px solid var(--ink);font-size:2.4rem;margin:.5rem 0 1rem;background:var(--surface)}
+.score-big{font-weight:900;font-size:clamp(3rem,12vw,5rem);line-height:1;margin:.25rem 0}
+.sum{list-style:none;padding:0;margin:1.25rem 0;display:grid;gap:.5rem}
+.sum li{display:flex;justify-content:space-between;gap:1rem;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem}
+.review details{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin-bottom:.5rem}
+.review summary{cursor:pointer;font-weight:700}
+.review p{margin:.5rem 0 0;font-size:.95rem}
+.hide{display:none!important}
+.note{font-size:.85rem;color:var(--muted);margin-top:2rem}
+@media (max-width:560px){.six{grid-template-columns:1fr 1fr}.cols3{grid-template-columns:1fr}.cols2.long{grid-template-columns:1fr}.match{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.pop,.mcard.shake{animation:none}.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="start">
+  <p class="muted">Universidad de Manizales · Compromisos académicos</p>
+  <h1>Reto: los componentes de la docencia</h1>
+  <p>La docencia no se agota en la clase. El compromiso académico reconoce seis componentes y el tiempo que sostiene cada encuentro formativo. Supera cuatro niveles y comprueba cuánto sabes.</p>
+  <div class="six" id="six"></div>
+  <ul class="levels" id="levelList"></ul>
+  <p class="muted">Tienes 3 vidas por nivel. Cada acierto suma 10 puntos y, desde tres aciertos seguidos, ganas 5 puntos extra.</p>
+  <button class="primary" id="go">Comenzar el reto</button>
+  <p class="muted" id="best" style="margin-top:.75rem"></p>
+</section>
+
+<section id="game" class="hide">
+  <div class="hud">
+    <div class="hud-row">
+      <span class="lvl" id="hLvl"></span>
+      <span class="muted" id="hQ"></span>
+      <span class="streak" id="hStreak"></span>
+      <span class="lives" id="hLives"></span>
+      <span class="stat"><b id="hScore">0</b><span class="muted">puntos</span></span>
+    </div>
+    <div class="track"><div class="fill" id="hFill"></div></div>
+  </div>
+  <div class="intro-lvl" id="lvlIntro"></div>
+  <div class="prompt" id="prompt" aria-live="polite"></div>
+  <div id="area"></div>
+  <div id="fb" role="status"></div>
+  <div class="row-end"><button class="primary hide" id="next">Siguiente</button></div>
+</section>
+
+<section id="lvlEnd" class="hide"></section>
+<section id="end" class="hide"></section>
+
+<p class="note">Basado en las orientaciones “Comprender para planear, planear para desarrollar y evidenciar para mejorar” (Universidad de Manizales, 2026): componentes de la docencia, tiempo para preparar, evaluar y acompañar, y horario regular e irregular.</p>
+</div>
+
+<script>
+const COMP = [
+ {n:"Docencia directa", k:"--a", d:"Actividades formativas en contacto directo, en todos los niveles y modalidades, con horario regular o irregular.", x:"Dos horas semanales de clase con un grupo de pregrado."},
+ {n:"Planeación y preparación de clase", k:"--b", d:"Organización de las actividades presenciales, virtuales, de trabajo independiente y de interacción, consignadas en el syllabus.", x:"Organizar las actividades del curso en el syllabus."},
+ {n:"Evaluación y seguimiento", k:"--c", d:"Tiempo para preparar, construir y acompañar a los estudiantes en la evaluación.", x:"Diseñar una rúbrica, calificar y retroalimentar un informe."},
+ {n:"Asesoría de trabajo autónomo, preprácticas y prácticas", k:"--d", d:"Acompañamiento de estudiantes en escenarios donde contrastan sus aprendizajes con los sectores productivos y sociales.", x:"Asesorar la práctica de un estudiante de pregrado."},
+ {n:"Gestión curricular", k:"--e", d:"Participación reflexiva en las escuelas de pensamiento, los desarrollos curriculares y la evaluación de los programas.", x:"Participar en la revisión de los resultados de aprendizaje del programa."},
+ {n:"Formación docente", k:"--f", d:"Mínimo 32 horas semestrales, en horario irregular según la agenda de capacitación; equivale a 2 horas semanales.", x:"Asistir a la agenda de capacitación del semestre."}
+];
+
+const LEVELS = [
+ {name:"Seis componentes", icon:"🧩", desc:"Empareja cada componente con su descripción.",
+  intro:"Toca un componente y luego la descripción que le corresponde. Cada pareja correcta suma 10 puntos; cada error cuesta una vida.",
+  items:[{k:"match"}]},
+ {name:"¿En qué columna?", icon:"📊", desc:"Ubica cada actividad en HCD, HCC o según el rol.",
+  intro:"<strong>HCD</strong>: horas semanales de contacto directo. <strong>HCC</strong>: horas complementarias al contacto. Las asesorías de prácticas se reflejan <strong>según el rol</strong> definido. ¿Dónde aparece cada actividad?",
+  items:[
+   {k:"bin",t:"Dos horas semanales de clase con un grupo de pregrado",c:0,w:"La docencia directa se refleja en la columna HCD, en la línea de cada grupo."},
+   {k:"bin",t:"Participar en la revisión de los resultados de aprendizaje del programa",c:1,w:"Es gestión curricular, reconocida como tiempo de contacto indirecto-complementario (HCC)."},
+   {k:"bin",t:"Asesorar la práctica de un estudiante de pregrado",c:2,w:"La asesoría de prácticas se refleja según el rol definido en la sección 7 de las orientaciones."},
+   {k:"bin",t:"Asistir a la agenda de capacitación docente del semestre",c:1,w:"La formación docente se ve reflejada en la columna HCC: 2 horas semanales."},
+   {k:"bin",t:"Un seminario de posgrado concentrado en tres sábados",c:0,w:"Es docencia directa en horario irregular; se refleja en HCD, expresado en horas semanales."},
+   {k:"bin",t:"Diseñar una rúbrica y retroalimentar un informe",c:1,w:"La evaluación y el seguimiento ocurren antes y después del contacto directo: son HCC."},
+   {k:"bin",t:"Preparar la clase y la guía de trabajo independiente",c:1,w:"La planeación y preparación de clase es tiempo complementario (HCC) y se consigna en el syllabus."}
+  ]},
+ {name:"Regular o irregular", icon:"🗓️", desc:"Distingue los tipos de horario y su unidad.",
+  intro:"<strong>Regular</strong>: horas semanales durante las 16 o 19 semanas del periodo. <strong>Irregular</strong>: horas modulares o concentradas.",
+  items:[
+   {k:"two",t:"Una clase todos los martes de 7:00 a 9:00 durante el semestre",c:0,w:"Se repite cada semana durante todo el periodo: horario regular."},
+   {k:"two",t:"Un seminario de posgrado tres sábados del periodo, de 8:00 a 11:00",c:1,w:"Las horas están concentradas en fechas específicas: horario irregular."},
+   {k:"two",t:"La formación docente según la agenda de capacitación",c:1,w:"La formación docente se desarrolla en horario irregular, según la agenda de capacitación."},
+   {k:"two",t:"Un curso los lunes y miércoles de 10:00 a 12:00 durante 16 semanas",c:0,w:"Horas definidas de forma semanal durante el periodo: horario regular."},
+   {k:"choice",t:"¿En qué unidad expresa el reporte el tiempo de ambos tipos de horario?",o:["Horas totales del semestre","Horas semanales","Días del periodo","Créditos"],c:1,w:"En ambos casos se expresa en horas semanales, para que todos los compromisos se lean con la misma unidad."},
+   {k:"choice",t:"La formación docente mínima es de 32 horas semestrales. ¿A cuántas horas semanales equivale?",o:["1 hora","2 horas","4 horas","8 horas"],c:1,w:"32 horas ÷ 16 semanas = 2 horas semanales, en la columna HCC."}
+  ]},
+ {name:"Preparar, evaluar y acompañar", icon:"🛠️", desc:"El tiempo que sostiene la calidad de la clase.",
+  intro:"Preparar, diseñar guías, construir instrumentos y retroalimentar ocurren antes y después del contacto directo. Sin ese tiempo, el encuentro formativo pierde profundidad.",
+  items:[
+   {k:"multi",t:"¿De qué depende el tiempo para preparar, evaluar y acompañar? Selecciona todas las opciones correctas.",o:["Número de estudiantes de cada grupo","Nivel de formación","Naturaleza de la asignatura","Dinámicas propias de su preparación","Antigüedad del profesor","Día de la semana de la clase"],c:[0,1,2,3],w:"Depende del número de estudiantes, el nivel de formación, la naturaleza de la asignatura y las dinámicas de su preparación."},
+   {k:"choice",t:"¿Quién puede complementar el tiempo reconocido para estas labores?",o:["El propio profesor, sin concertación","La dirección de programa","Los estudiantes del curso","Talento Humano"],c:1,w:"La dirección de programa puede complementarlo según la naturaleza de las actividades y el número de estudiantes proyectados."},
+   {k:"choice",t:"¿Cuándo conviene revisar si el tiempo reconocido corresponde a la realidad?",o:["Al terminar el periodo","Al concertar el compromiso académico","Solo si hay una queja","Durante la evaluación docente"],c:1,w:"Conviene revisarlo al concertar el compromiso, para que el tiempo reconocido corresponda a la realidad."},
+   {k:"choice",t:"¿Dónde deben quedar consignadas las actividades planeadas del curso?",o:["En el syllabus","En el correo institucional","En el plan de mejora","En el acta del consejo de facultad"],c:0,w:"La planeación y preparación de clase deben quedar consignadas en el syllabus."},
+   {k:"choice",t:"¿Qué instancias acompañan a los profesores en sus prácticas pedagógicas?",o:["Talento Humano y Bienestar","El Instituto Pedagógico y el CEDUM","La Dirección de Investigaciones","Admisiones y Registro"],c:1,w:"El Instituto Pedagógico y el Centro de Educación a Distancia (CEDUM) orientan a los profesores cuando lo requieren."},
+   {k:"multi",t:"¿En qué pueden orientarte el Instituto Pedagógico y el CEDUM? Selecciona todas las correctas.",o:["Diseño de clases","Construcción del syllabus","Actividades de trabajo independiente","Estrategias de evaluación y retroalimentación","Diseño de ambientes de aprendizaje","Trámites de nómina"],c:[0,1,2,3,4],w:"Orientan en diseño de clases, syllabus, trabajo independiente, evaluación y retroalimentación, y ambientes de aprendizaje. Usar estos servicios cuida la calidad de la formación como comunidad académica."}
+  ]}
+];
+const BINS=[["HCD","Contacto directo","--a"],["HCC","Complementarias","--b"],["Según el rol","Ver sección 7","--d"]];
+
+const $=s=>document.querySelector(s);
+const show=id=>["start","game","lvlEnd","end"].forEach(s=>$("#"+s).classList.toggle("hide",s!==id));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let L=0,Q=0,score=0,streak=0,maxStreak=0,lives=3,answered=false,results=[],misses=[],lvlStart=0;
+const KEY="reto-componentes-docencia-best";
+const bestText=()=>{try{const b=JSON.parse(localStorage.getItem(KEY)||"null");return b?`Tu mejor puntaje: ${b} puntos`:"";}catch(e){return "";}};
+const saveBest=()=>{try{const b=JSON.parse(localStorage.getItem(KEY)||"0");if(score>b)localStorage.setItem(KEY,JSON.stringify(score));}catch(e){}};
+const lvlTotal=lv=>lv.items[0].k==="match"?COMP.length:lv.items.length;
+
+$("#six").innerHTML=COMP.map(c=>`<div style="--k:var(${c.k})">${c.n}</div>`).join("");
+$("#levelList").innerHTML=LEVELS.map((l,i)=>`<li><span class="n">${l.icon}</span><span><strong>Nivel ${i+1}: ${l.name}</strong><small>${l.desc}</small></span></li>`).join("");
+$("#best").textContent=bestText();
+
+function startGame(){L=0;score=0;maxStreak=0;results=[];misses=[];startLevel();}
+function startLevel(){Q=0;lives=3;streak=0;lvlStart=score;results[L]={ok:0,total:lvlTotal(LEVELS[L])};misses=misses.filter(m=>m.lvl!==LEVELS[L].name);show("game");renderQ();}
+function hud(progress){
+  const lv=LEVELS[L];
+  $("#hLvl").textContent=`Nivel ${L+1}: ${lv.name}`;
+  $("#hQ").textContent=lv.items[0].k==="match"?"":`Pregunta ${Q+1} de ${lv.items.length}`;
+  $("#hScore").textContent=score;
+  $("#hLives").textContent="❤️".repeat(Math.max(lives,0))+"🤍".repeat(3-Math.max(lives,0));
+  $("#hLives").setAttribute("aria-label",`${lives} vidas`);
+  $("#hStreak").textContent=streak>=2?`🔥 ${streak} seguidos`:"";
+  $("#hFill").style.width=(progress*100)+"%";
+}
+function gain(){streak++;maxStreak=Math.max(maxStreak,streak);const p=10+(streak>=3?5:0);score+=p;results[L].ok++;return p;}
+function lose(miss){streak=0;lives--;misses.push(Object.assign({lvl:LEVELS[L].name},miss));}
+
+function renderQ(){
+  const lv=LEVELS[L],it=lv.items[Q];answered=false;
+  $("#lvlIntro").innerHTML=lv.intro;$("#fb").className="";$("#fb").innerHTML="";$("#next").classList.add("hide");
+  hud(Q/lv.items.length);
+  const P=$("#prompt"),A=$("#area");
+  if(it.k==="match") return renderMatch();
+  P.innerHTML=`<span class="tag">${it.k==="multi"?"Selección múltiple":it.k==="bin"?"¿En qué columna?":it.k==="two"?"¿Qué horario es?":"Pregunta"}</span><span class="${it.k==="bin"||it.k==="two"?"big":""}">${it.t}</span>`;
+  if(it.k==="bin") A.innerHTML=`<div class="opts cols3">${BINS.map((b,i)=>`<button class="opt bin" data-i="${i}" style="--k:var(${b[2]})">${b[0]}<small>${b[1]}</small></button>`).join("")}</div>`;
+  else if(it.k==="two") A.innerHTML=`<div class="opts cols2">${["Regular","Irregular"].map((b,i)=>`<button class="opt bin" data-i="${i}" style="--k:var(${i?"--d":"--c"})">${b}<small>${i?"Modular o concentrado":"Semanal todo el periodo"}</small></button>`).join("")}</div>`;
+  else if(it.k==="choice") A.innerHTML=`<div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${o}</span></button>`).join("")}</div>`;
+  else if(it.k==="multi"){
+    it.order=shuffle(it.o.map((_,i)=>i));
+    A.innerHTML=`<div class="opts cols2 long">${it.order.map(i=>`<button class="opt" data-i="${i}" aria-pressed="false"><span class="box" aria-hidden="true">✓</span><span>${it.o[i]}</span></button>`).join("")}</div><div class="row-end"><button class="primary" id="check" disabled>Comprobar</button></div>`;
+    A.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(answered)return;const on=b.classList.toggle("picked");b.setAttribute("aria-pressed",on);$("#check").disabled=!A.querySelector(".opt.picked");});
+    $("#check").onclick=checkMulti;
+  }
+  if(it.k!=="multi") A.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  P.classList.remove("pop");void P.offsetWidth;P.classList.add("pop");
+}
+function labelOf(it,i){return it.k==="bin"?BINS[i][0]:it.k==="two"?["Regular","Irregular"][i]:it.o[i];}
+function pick(i){
+  if(answered)return;answered=true;const it=LEVELS[L].items[Q],ok=i===it.c;
+  $("#area").querySelectorAll(".opt").forEach(b=>{const bi=+b.dataset.i;b.disabled=true;if(bi===it.c)b.classList.add("correct");else if(bi===i)b.classList.add("wrong");});
+  finish(ok,labelOf(it,it.c),it);
+}
+function checkMulti(){
+  if(answered)return;answered=true;const it=LEVELS[L].items[Q];
+  const picked=[...$("#area").querySelectorAll(".opt.picked")].map(b=>+b.dataset.i);
+  const ok=picked.length===it.c.length&&it.c.every(i=>picked.includes(i));
+  $("#area").querySelectorAll(".opt").forEach(b=>{const i=+b.dataset.i,should=it.c.includes(i),was=picked.includes(i);b.disabled=true;
+    if(should&&was)b.classList.add("correct");else if(!should&&was)b.classList.add("wrong");else if(should&&!was)b.classList.add("missed");});
+  $("#check").disabled=true;
+  finish(ok,it.c.map(i=>it.o[i]).join(", "),it);
+}
+function finish(ok,right,it){
+  let p=0;if(ok)p=gain();else lose({q:it.t,a:right,why:it.w});
+  const fb=$("#fb");fb.className="fb "+(ok?"ok":"no");
+  fb.innerHTML=`<span class="pts">${ok?`+${p}`:"−1 ❤️"}</span><strong>${ok?(p>10?"¡Correcto, con bono de racha!":"¡Correcto!"):`La respuesta es: ${right}`}</strong>${it.w}`;
+  const lv=LEVELS[L];hud((Q+1)/lv.items.length);nextBtn(Q+1<lv.items.length);
+}
+function nextBtn(more){
+  const nx=$("#next");
+  if(lives<=0){nx.textContent="Ver resultado";nx.onclick=failLevel;}
+  else{nx.textContent=more?"Siguiente":"Ver resultado del nivel";nx.onclick=()=>{if(more){Q++;renderQ();}else levelEnd();};}
+  nx.classList.remove("hide");nx.focus();
+}
+
+/* Emparejar */
+let mSel=null,mDone=0;
+function renderMatch(){
+  mSel=null;mDone=0;
+  $("#prompt").innerHTML=`<span class="tag">Emparejar</span><span class="big">Une cada componente de la docencia con su descripción.</span>`;
+  const comps=shuffle(COMP.map((c,i)=>i)),defs=shuffle(COMP.map((c,i)=>i));
+  $("#area").innerHTML=`<div class="match"><div class="col"><h3>Componentes</h3>${comps.map(i=>`<button class="mcard comp" data-i="${i}" style="--k:var(${COMP[i].k})">${COMP[i].n}</button>`).join("")}</div>
+    <div class="col"><h3>Descripciones</h3>${defs.map(i=>`<button class="mcard def" data-i="${i}">${COMP[i].d}</button>`).join("")}</div></div>`;
+  $("#area").querySelectorAll(".mcard.comp").forEach(b=>b.onclick=()=>{if(b.classList.contains("done")||lives<=0)return;$("#area").querySelectorAll(".comp").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");mSel=+b.dataset.i;});
+  $("#area").querySelectorAll(".mcard.def").forEach(b=>b.onclick=()=>tryPair(b));
+  hud(0);
+}
+function tryPair(b){
+  if(b.classList.contains("done")||lives<=0)return;
+  if(mSel===null){$("#fb").className="fb info";$("#fb").innerHTML="Primero toca un componente de la columna izquierda.";return;}
+  const i=+b.dataset.i,c=$(`.mcard.comp[data-i="${mSel}"]`);
+  if(i===mSel){
+    const p=gain();mDone++;c.classList.remove("sel");c.classList.add("done");b.classList.add("done");c.disabled=true;b.disabled=true;
+    $("#fb").className="fb ok";$("#fb").innerHTML=`<span class="pts">+${p}</span><strong>${COMP[i].n}</strong>Ejemplo: ${COMP[i].x}`;
+  }else{
+    lose({q:`Descripción de “${COMP[mSel].n}”`,a:COMP[mSel].d,why:`Ejemplo: ${COMP[mSel].x}`});
+    b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake");
+    $("#fb").className="fb no";$("#fb").innerHTML=`<span class="pts">−1 ❤️</span><strong>Esa descripción no corresponde a ${COMP[mSel].n}.</strong>Intenta con otra.`;
+  }
+  mSel=null;$("#area").querySelectorAll(".comp").forEach(x=>x.classList.remove("sel"));
+  hud(mDone/COMP.length);
+  if(lives<=0){$("#area").querySelectorAll(".mcard").forEach(x=>x.disabled=true);nextBtn(false);}
+  else if(mDone===COMP.length){nextBtn(false);}
+}
+
+function failLevel(){
+  const el=$("#lvlEnd");
+  el.innerHTML=`<p class="muted">Nivel ${L+1}</p><div class="badge" aria-hidden="true">💡</div><h2>Te quedaste sin vidas</h2>
+   <p>Cada error es una pista. Revisa las explicaciones e inténtalo de nuevo; tu puntaje vuelve al que tenías al empezar este nivel.</p>
+   <div class="row-end" style="justify-content:flex-start"><button class="primary" id="retry">Repetir el nivel ${L+1}</button></div>`;
+  show("lvlEnd");$("#retry").focus();$("#retry").onclick=()=>{score=lvlStart;startLevel();};
+}
+function levelEnd(){
+  const lv=LEVELS[L],r=results[L];
+  const el=$("#lvlEnd");
+  el.innerHTML=`<p class="muted">Nivel ${L+1} completado</p><div class="badge" aria-hidden="true">${lv.icon}</div><h2>${lv.name}</h2>
+   <p>${r.ok===r.total&&lives===3?"¡Nivel perfecto, sin perder vidas!":"¡Nivel superado!"} Acertaste ${r.ok} de ${r.total}.</p><p class="muted">Puntaje acumulado: ${score}</p>
+   <div class="row-end" style="justify-content:flex-start"><button class="primary" id="lvNext">${L+1<LEVELS.length?`Ir al nivel ${L+2}: ${LEVELS[L+1].name}`:"Ver resultado final"}</button></div>`;
+  show("lvlEnd");$("#lvNext").focus();$("#lvNext").onclick=()=>{if(L+1<LEVELS.length){L++;startLevel();}else final();};
+}
+function final(){
+  saveBest();
+  const total=results.reduce((a,r)=>a+r.total,0),ok=results.reduce((a,r)=>a+r.ok,0),errs=misses.length,pct=ok/(ok+errs||1);
+  const m=pct>=.9?["🥇","Oro","Dominas los componentes de la docencia y el tiempo que los sostiene."]:pct>=.75?["🥈","Plata","Tienes una comprensión sólida; repasa los detalles que se te escaparon."]:["🥉","Bronce","Ya tienes las bases. Un repaso te ayudará a leer mejor tu compromiso."];
+  $("#end").innerHTML=`<p class="muted">Reto completado</p><div class="badge" aria-hidden="true">${m[0]}</div><h2>Medalla de ${m[1]}</h2>
+   <div class="score-big">${score}</div><p class="muted">puntos · ${ok} aciertos · ${errs} ${errs===1?"error":"errores"} · racha máxima de ${maxStreak}</p><p>${m[2]}</p>
+   <ul class="sum">${LEVELS.map((l,i)=>`<li><span>${l.icon} ${l.name}</span><strong>${results[i].ok} de ${results[i].total}</strong></li>`).join("")}</ul>
+   ${errs?`<div class="review"><h2>Para repasar</h2>${misses.map(x=>`<details><summary>${x.q}</summary><p><strong>Respuesta:</strong> ${x.a}</p><p>${x.why}</p></details>`).join("")}</div>`:`<p><strong>¡Sin errores!</strong></p>`}
+   <div class="row-end" style="justify-content:flex-start"><button class="primary" id="again">Jugar de nuevo</button><button class="ghost" id="home">Volver al inicio</button></div>`;
+  show("end");
+  $("#again").onclick=startGame;$("#home").onclick=()=>{$("#best").textContent=bestText();show("start");};
+}
+$("#go").onclick=startGame;
+document.addEventListener("keydown",e=>{
+  if($("#game").classList.contains("hide")||answered)return;
+  const it=LEVELS[L].items[Q];if(!it||it.k==="match"||it.k==="multi")return;
+  const n=parseInt(e.key,10),btns=$("#area").querySelectorAll(".opt");
+  if(n>=1&&n<=btns.length)pick(+btns[n-1].dataset.i);
+});
+</script>
+</body>
+</html>

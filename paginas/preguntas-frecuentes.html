@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entender mi reporte | Soy Profe UManizales</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="contenedor encabezado__interior">
+      <a href="../index.html" class="logo">
+        <img src="../img/Logo_UM.jpg" alt="Universidad de Manizales" class="logo__img">
+      </a>
+      
+      <nav class="menu" aria-label="Menú principal">
+        <a href="../index.html" class="migas__inicio" aria-label="Volver al inicio" title="Volver al inicio"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></a>
+        <a href="https://lore.umanizales.edu.co/" target="_blank" rel="noopener noreferrer" class="boton boton--secundario">
+          Ingresa a LORE
+          <svg class="icono icono--sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+  
+
+  <main>
+     <section class="interna-hero interna-hero--banner">
+      <div class="contenedor">
+        <h1 class="sr-only">Preguntas frecuentes</h1>
+        <div class="interna-hero__banners">
+          <img class="interna-hero__banner" src="../img/banner/preguntas_frecuentes.jpeg" alt="Glosario interactivo">
+        </div>
+      </div>
+    </section>
+
+    <section class="interna-cuerpo">
+      <div class="contenedor">
+        <div class="aviso-construccion">
+          <span class="tarjeta__icono"><svg class="icono" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg></span>
+          <div>
+            
+            <iframe class="marco-embebido" src="preguntas.html" title="Preguntas frecuentes"></iframe>
+            
+            <div style="text-align: center;">
+              <a href="../index.html" class="boton boton--primario"><svg class="icono icono--sm" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Volver al inicio</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer__top">
+        <div>
+          <p class="footer__marca">SER PROFE UM</p>
+          <p class="footer__datos">Universidad de Manizales<br>Comprende tu compromiso académico</p>
+        </div>
+        <nav class="footer__menu" aria-label="Menú del pie de página">
+          <a href="../index.html">Inicio</a>
+        </nav>
+      </div>
+      <p class="footer__aviso">
+        <svg class="icono icono--sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Maqueta conceptual con fines orientativos. No sustituye la información oficial, la normativa ni los canales institucionales de la Universidad de Manizales.
+      </p>
+    </div>
+  </footer>
+  <script src="../js/popups.js"></script>
+  <script src="../js/marcos.js"></script>
+</body>
+</html>

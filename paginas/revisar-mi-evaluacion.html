@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisar mi evaluación | Soy Profe UManizales</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="contenedor encabezado__interior">
+      <a href="../index.html" class="logo">
+        <img src="../img/Logo_UM.jpg" alt="Universidad de Manizales" class="logo__img">
+      </a>
+      
+      <nav class="menu" aria-label="Menú principal">
+        <a href="../index.html" class="migas__inicio" aria-label="Volver al inicio" title="Volver al inicio"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></a>
+        <a href="https://lore.umanizales.edu.co/" target="_blank" rel="noopener noreferrer" class="boton boton--secundario">
+          Ingresa a LORE
+          <svg class="icono icono--sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="interna-hero interna-hero--banner">
+      <div class="contenedor">
+        <h1 class="sr-only">Conoce la evaluación docente</h1>
+        <div class="interna-hero__banners">
+          <img class="interna-hero__banner" src="../img/banner/conocer_evalua_docente.jpeg" alt="Glosario interactivo">
+        </div>
+      </div>
+    </section>
+
+    <section class="interna-cuerpo">
+      <div class="contenedor">
+        <div class="aviso-construccion">
+          <span class="tarjeta__icono"><svg class="icono" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg></span>
+          <div>
+            <h2 style="font-weight: 700; color: var(--verde-700); font-size: 22px;">¿Qué se encuentra en la evaluación? </h2>
+            <p>La evaluación incorpora una lectura cualitativa y descriptiva construida a partir de los comentarios abiertos de los estudiantes en la evaluación docente. La plataforma presenta una síntesis de lo que los estudiantes valoran de la labor del profesor, de los aspectos que cuestionan y del tono general de sus comentarios, así como una relación de los aspectos que piden mejorar, por ejemplo, la claridad de las explicaciones, la intención formativa de los contenidos o la profundidad conceptual de las actividades. Esta lectura no reemplaza los resultados numéricos, los complementa y ayuda a comprender el porqué de una valoración, a reconocer las prácticas que los estudiantes destacan y a identificar con precisión dónde enfocar el plan de mejora y mantenimiento. La plataforma también advierte cuando el número de respuestas es bajo, para que los resultados se interpreten con prudencia, lo que evita sesgos en el análisis de los datos.</p>
+            
+            <h2 style="font-weight: 700; color: var(--verde-700); font-size: 22px;">El plan de mejora y mantenimiento docente </h2>
+            <ul class="lista">
+              <li>
+                A partir de esa evaluación, el docente formula el plan de mejora y mantenimiento (Figura 8).
+                Para cada fuente de evaluación el plan registra el resultado actual y el resultado esperado,
+                luego aborda las dimensiones del saber, el hacer y el ser, y para cada una define un objetivo,
+                las acciones concretas para lograrlo y una evidencia o indicador que permitirá reconocer el avance,
+                por ejemplo, un syllabus actualizado o un horario de asesoría publicado. En las observaciones se
+                indica si se trata de un plan de mantenimiento, orientado a consolidar una fortaleza, o de mejora,
+                orientado a fortalecer un aspecto.
+              </li>
+              <li>
+                El plan incluye una fecha de presentación del avance y un espacio de seguimiento para registrar
+                los logros alcanzados, sus evidencias y el porcentaje de cumplimiento. La plataforma ofrece una
+                opción de sugerencias como apoyo para su construcción, que recoge todos los aspectos derivados del
+                análisis cuantitativo y cualitativo de los instrumentos analizados, que siempre debe ser revisada
+                y ajustada por cada profesor.
+              </li>
+            </ul>
+
+            <p class="reto contenido-centrado">
+              <button type="button" class="boton boton--secundario" data-abrir="modal-reto">
+                Realiza el Reto
+                <svg class="icono icono--sm" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </button>
+            </p>
+
+            <dialog class="modal-pdf" id="modal-reto" aria-label="Reto de la evaluación docente">
+              <div class="modal-pdf__barra">
+                <a href="reto-evaluacion-docente.html" target="_blank" rel="noopener noreferrer">Abrir en una pestaña nueva</a>
+                <button type="button" class="modal-pdf__cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+              </div>
+              <iframe data-src="reto-evaluacion-docente.html" title="Reto de la evaluación docente"></iframe>
+            </dialog>
+
+            <div class="contenido-centrado">
+              <h2 style="font-weight: 700; color: var(--verde-700); font-size: 22px;" >Video tutorial: </h2>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/1qsJ-ujh8wI?si=D75ipMD_yXjaJhUD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <br><br>
+
+            <p class="contenido-centrado">
+              <button type="button" class="boton boton--secundario" data-abrir="modal-pdf">
+                Ver PDF
+                <svg class="icono icono--sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              </button>
+            </p>
+
+            <dialog class="modal-pdf" id="modal-pdf" aria-label="Documento PDF">
+              <div class="modal-pdf__barra">
+                <a href="../pdf/003-TUT-MEJ-CON-MI-EVAL.pdf" target="_blank" rel="noopener noreferrer">Abrir en una pestaña nueva</a>
+                <button type="button" class="modal-pdf__cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+              </div>
+              <iframe data-src="../pdf/003-TUT-MEJ-CON-MI-EVAL.pdf#view=FitH" title="Documento PDF"></iframe>
+            </dialog>
+
+            <br><br>
+            <div style="text-align: center;">
+              <a href="../index.html" class="boton boton--primario"><svg class="icono icono--sm" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Volver al inicio</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer__top">
+        <div>
+          <p class="footer__marca">SER PROFE UM</p>
+          <p class="footer__datos">Universidad de Manizales<br>Comprende tu compromiso académico</p>
+        </div>
+        <nav class="footer__menu" aria-label="Menú del pie de página">
+          <a href="../index.html">Inicio</a>
+        </nav>
+      </div>
+      <p class="footer__aviso">
+        <svg class="icono icono--sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Maqueta conceptual con fines orientativos. No sustituye la información oficial, la normativa ni los canales institucionales de la Universidad de Manizales.
+      </p>
+    </div>
+  </footer>
+  <script src="../js/popups.js"></script>
+</body>
+</html>

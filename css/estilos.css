@@ -1,0 +1,857 @@
+/* =========================================================
+   SOY PROFE UMANIZALES — Hoja de estilos principal
+   ---------------------------------------------------------
+   Índice:
+   1.  Variables (colores, tipografía, medidas)
+   2.  Base y utilidades
+   3.  Botones
+   4.  Encabezado / menú principal
+   5.  Hero (portada)
+   6.  ¿Qué te gustaría explorar hoy? (tarjetas)
+   7.  Dimensiones (Docencia, Investigación…)
+   8.  Ciclo de ocho momentos
+   9.  Recursos
+   10. Acompañamiento docente
+   11. Pie de página (footer)
+   12. Páginas internas
+   13. Responsive (tabletas y celulares)
+   ========================================================= */
+
+/* ---------- 1. VARIABLES ---------- */
+:root {
+  /* Verdes institucionales */
+  --verde-900: #0b4a39;   /* bloque Acompañamiento */
+  --verde-700: #0d5c46;   /* botones y números */
+  --verde-500: #2f7a5f;   /* textos pequeños en verde */
+  --verde-100: #e6f0ea;   /* fondo del hero */
+  --verde-50:  #f2f7f4;
+
+  /* Colores de las dimensiones */
+  /* Colores de las dimensiones (fondos suaves) */
+  --docencia:      #fdf5e1;  /* amarillo claro */
+  --investigacion: #e4f5f6;  /* turquesa claro */
+  --proyeccion:    #f9e8f1;  /* magenta claro */
+  --gestion:       #eaedf3;  /* azul marino claro */
+
+  /* Neutros */
+  --tinta:       #1d2b36;  /* títulos */
+  --texto:       #4d5b66;  /* párrafos */
+  --texto-suave: #7b8791;  /* textos de apoyo */
+  --borde:       #e1e6e3;
+  --blanco:      #ffffff;
+  --fondo:       #f7f8f7;
+
+  /* Pie de página */
+  --footer: #1c3148;
+
+  /* Tipografía */
+  --fuente: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Medidas */
+  --ancho-max: 1100px;
+  --radio: 10px;
+  --radio-grande: 16px;
+  --sombra: 0 1px 2px rgba(16, 40, 30, 0.04);
+}
+
+/* Botón Reto en páginas internas */
+.reto { margin: 8px 0 16px; }
+
+
+/* ---------- 2. BASE Y UTILIDADES ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--texto);
+  background: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+  /* El footer siempre queda abajo, aunque la página sea corta */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main { flex: 1; }
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 { color: var(--tinta); margin: 0; font-weight: 400; line-height: 1.2; }
+p { margin: 0; }
+
+/* Contenedor centrado que usan todas las secciones */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.seccion { padding: 72px 0; }
+.seccion--gris { background: var(--fondo); }
+
+/* Etiqueta pequeña en mayúsculas sobre cada título */
+.etiqueta {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--verde-700);
+  margin-bottom: 10px;
+}
+
+.titulo-seccion { font-size: 30px; margin-bottom: 10px; }
+.intro-seccion  { max-width: 560px; color: var(--texto); font-size: 14px; }
+
+/* Nota informativa con ícono (ⓘ) */
+.nota {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+.nota svg { flex-shrink: 0; color: var(--verde-500); }
+
+/* Íconos SVG: heredan el color del texto */
+.icono { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.icono--sm { width: 14px; height: 14px; }
+
+
+/* ---------- 3. BOTONES ---------- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.boton:hover { transform: translateY(-1px); }
+
+.boton--primario { background: var(--verde-700); color: var(--blanco); }
+.boton--primario:hover { background: var(--verde-900); }
+
+.boton--secundario { background: var(--blanco); color: var(--verde-700); border-color: var(--borde); }
+.boton--secundario:hover { border-color: var(--verde-700); }
+
+/* Enlace de texto con flecha: "Explorar ejemplo →" */
+.enlace-flecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--verde-700);
+}
+.enlace-flecha:hover { text-decoration: underline; }
+
+
+/* ---------- 4. ENCABEZADO / MENÚ PRINCIPAL ---------- */
+.encabezado {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--blanco);
+  border-bottom: 1px solid var(--borde);
+}
+.encabezado__interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+.logo__img { height: 55px; width: auto; margin-bottom: 4px; }
+
+.logo__nombre { display: block; font-size: 16px; color: var(--tinta); }
+.logo__sub    { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.04em; color: var(--verde-700); }
+
+.menu { display: flex; align-items: center; gap: 28px; }
+.menu__enlace { font-size: 13px; font-weight: 500; color: var(--tinta); }
+.menu__enlace:hover,
+.menu__enlace--activo { color: var(--verde-500); }
+
+
+/* ---------- 5. HERO (PORTADA) ---------- */
+.hero { background: var(--verde-100); padding: 56px 0 0; }
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+}
+
+/* Portada con el GIF animado de fondo, detrás de los botones y el video */
+.hero__grid--fondo {
+  background: url("../img/banner/banner_index.gif") center / cover no-repeat;
+  border-radius: var(--radio-grande);
+  padding: 32px;
+}
+/* Botones abajo, en una sola fila sobre la parte inferior de la foto (sin panel, para que se vea el GIF) */
+/* Botones: abajo, sobre la franja de edificios del GIF (18px hacia el borde inferior y 40px a la derecha) */
+.hero__grid--fondo > div:first-child { align-self: end; position: relative; left: 40px; top: calc(18px - 3mm); }
+@media (max-width: 960px) {
+  .hero__grid--fondo > div:first-child { left: 0; top: 0; } /* en una sola columna no hace falta moverlos */
+}
+.hero__grid--fondo .hero__botones { flex-wrap: nowrap; justify-content: center; }
+@media (max-width: 1000px) {
+  .hero__grid--fondo .hero__botones { flex-wrap: wrap; }
+}
+/* En pantallas anchas el GIF se extiende 1,5 cm más a cada lado; el contenido se queda en su sitio */
+@media (min-width: 1200px) {
+  .hero__grid--fondo {
+    margin-inline: -1.5cm;
+    padding-inline: calc(32px + 1.5cm);
+  }
+  /* Video y etiqueta "Aprender también es compartir" 1,5 cm más a la derecha */
+  .hero__grid--fondo .hero__foto--video { position: relative; left: 1.5cm; }
+}
+@media (max-width: 640px) {
+  .hero__grid--fondo { padding: 16px; }
+}
+
+.hero__antetitulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--verde-700);
+  margin-bottom: 16px;
+}
+.hero__antetitulo::before { content: ""; width: 16px; height: 1.5px; background: var(--verde-700); }
+
+/* Logo "Soy profe Umanizales y yo..." (la imagen es cuadrada con mucho borde blanco: se recorta al texto) */
+.hero__logo { display: block; width: 320px; max-width: 100%; height: 200px; object-fit: cover; object-position: 50% 55%; margin-bottom: 12px; }
+.hero__marca { font-size: 19px; color: var(--verde-700); letter-spacing: 0.02em; margin-bottom: 6px; }
+.hero__titulo { font-size: 38px; line-height: 1.1; margin-bottom: 20px; color: var(--verde-700); /* mismo verde del botón "Explorar las dimensiones" */ }
+.hero__texto { max-width: 470px; font-size: 14px; margin-bottom: 24px; }
+.hero__botones { display: flex; flex-wrap: wrap; gap: 10px; }
+/* Fila de botones centrados (p. ej. documentos en Biblioteca de consulta); en pantallas angostas se apilan */
+.botones-fila { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 8px 0 24px; }
+/* Botones al doble del tamaño normal (letra 13→26px, relleno 10/16→20/32px, icono 14→28px) */
+.botones-fila .boton { gap: 16px; padding: 20px 32px; border-radius: 12px; font-size: 26px; }
+.botones-fila .icono--sm { width: 28px; height: 28px; }
+/* Icono de PDF: hoja con la etiqueta "PDF" en rojo */
+.icono--pdf { color: #c62828; }
+.icono--pdf text { fill: currentColor; stroke: none; font-size: 6.5px; font-weight: 800; font-family: Arial, sans-serif; }
+
+.hero__foto {
+  position: relative;
+  border-radius: var(--radio-grande);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+.hero__foto img { width: 100%; height: 100%; object-fit: cover; }
+.hero__chip {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--blanco);
+  font-size: 11px;
+  color: var(--tinta);
+}
+.hero__chip svg { color: var(--verde-700); }
+
+/* Variante con video: el video ocupa 16:9 y la etiqueta va debajo para no tapar los controles */
+.hero__foto--video {
+  aspect-ratio: auto;
+  overflow: visible;
+}
+.hero__foto--video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: var(--radio-grande);
+}
+.hero__foto--video .hero__chip {
+  position: static;
+  display: inline-flex;
+  margin-top: 12px;
+}
+
+/* Franja inferior del hero */
+.hero__franja {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+  padding: 18px 0 24px;
+  border-top: 1px solid rgba(13, 92, 70, 0.12);
+  font-size: 11px;
+  color: var(--tinta);
+}
+.hero__datos { color: var(--texto-suave); margin-right: auto; margin-left: 100px; }
+
+
+/* ---------- 6. TARJETAS "¿QUÉ TE GUSTARÍA EXPLORAR HOY?" ---------- */
+.explorar__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.tarjeta {
+  display: block;
+  padding: 18px;
+  min-height: 128px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--blanco);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.tarjeta:hover {
+  border-color: var(--verde-500);
+  box-shadow: 0 8px 20px rgba(13, 92, 70, 0.08);
+  transform: translateY(-2px);
+}
+
+.tarjeta__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.tarjeta__icono {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--verde-100);
+  color: var(--verde-700);
+}
+.tarjeta__tipo  { font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texto-suave); }
+.tarjeta__flecha { color: var(--verde-700); }
+.tarjeta__titulo { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.tarjeta__texto  { font-size: 12px; color: var(--texto-suave); }
+
+
+/* ---------- 7. DIMENSIONES ---------- */
+.dimensiones__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 26px;
+}
+
+/* Colores de cada tarjeta:
+   --fondo-dim = fondo suave | --acento = franja superior
+   --chip = fondo del ícono  | --oscuro = textos y botón */
+.dimension--docencia {
+  --fondo-dim: var(--docencia);
+  --acento: #e9a817;
+  --chip:   #f9dd95;
+  --oscuro: #7a5200;
+}
+.dimension--investigacion {
+  --fondo-dim: var(--investigacion);
+  --acento: #1fb1bd;
+  --chip:   #b4e3e7;
+  --oscuro: #0a6670;
+}
+.dimension--proyeccion {
+  --fondo-dim: var(--proyeccion);
+  --acento: #a6216f;
+  --chip:   #f0c4dc;
+  --oscuro: #8c1c5e;
+}
+.dimension--gestion {
+  --fondo-dim: var(--gestion);
+  --acento: #1c3148;
+  --chip:   #cdd5e2;
+  --oscuro: #1c3148;
+}
+
+/* La tarjeta usa esos colores */
+.dimension {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  background: var(--fondo-dim);
+  border-top: 4px solid var(--acento);
+  border-radius: 0 0 var(--radio) var(--radio);
+}
+
+.dimension__icono {
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border-radius: 8px;
+  background: var(--chip);
+  color: var(--oscuro);
+  margin-bottom: 14px;
+}
+.dimension__titulo { font-size: 17px; margin-bottom: 14px; color: var(--tinta); }
+.dimension__texto  { font-size: 12px; color: var(--texto); padding-bottom: 18px; border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+
+.dimension__pregunta { padding-top: 14px; flex-grow: 1; }
+.dimension__pregunta span { display: block; font-size: 9px; font-weight: 600; color: var(--oscuro); margin-bottom: 4px; }
+.dimension__pregunta p { font-size: 12px; color: var(--tinta); }
+
+/* Botón "Conocer más" */
+.dimension__boton {
+  align-self: flex-start;
+  margin-top: 16px;
+  padding: 7px 12px;
+  font-size: 12px;
+  background: var(--blanco);
+  color: var(--oscuro);
+  border-color: var(--chip);
+}
+.dimension__boton:hover { background: var(--oscuro); color: var(--blanco); }
+
+.mensaje-banda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--blanco);
+  font-size: 12px;
+  color: var(--tinta);
+}
+.mensaje-banda svg { color: var(--verde-700); flex-shrink: 0; }
+
+
+/* ---------- 8. CICLO DE OCHO MOMENTOS ---------- */
+.ciclo {
+  margin-top: 28px;
+  padding: 20px;
+  border-radius: var(--radio-grande);
+  background: var(--verde-100);
+}
+
+/* Cuadrícula de 7 columnas: paso · flecha · paso · flecha · paso · flecha · paso */
+.ciclo__fila {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr 24px 1fr 24px 1fr;
+  align-items: stretch;
+}
+
+.ciclo__flecha {
+  display: grid;
+  place-items: center;
+  color: var(--verde-700);
+}
+/* Flecha que baja del paso 04 al 05 */
+.ciclo__bajada {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr 24px 1fr 24px 1fr;
+  height: 28px;
+  color: var(--verde-700);
+}
+.ciclo__bajada svg { grid-column: 7; justify-self: center; align-self: center; }
+
+/* Cada paso es una tarjeta informativa (no es un enlace) */
+.paso {
+  display: block;
+  min-height: 128px;
+  padding: 16px;
+  border-radius: var(--radio);
+  background: var(--blanco);
+  border: 1px solid transparent;
+}
+.paso__numero {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: var(--verde-700);
+  color: var(--blanco);
+  font-size: 11px;
+}
+.paso__titulo { font-size: 15px; margin-bottom: 4px; }
+.paso__texto  { font-size: 11px; color: var(--texto-suave); }
+
+.ciclo__pie {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 11px;
+  color: var(--verde-700);
+}
+
+
+/* ---------- 9. RECURSOS ---------- */
+.recursos__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.recurso {
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--blanco);
+}
+
+/* Parte superior con la "mini hoja" de vista previa */
+.recurso__vista { padding: 16px 34px 0; }
+.recurso__vista--verde  { background: var(--docencia); }
+.recurso__vista--azul   { background: var(--investigacion); }
+.recurso__vista--morado { background: var(--gestion); }
+
+.hoja {
+  padding: 14px 14px 10px;
+  border-radius: 6px 6px 0 0;
+  background: var(--blanco);
+}
+.hoja__top { display: flex; justify-content: space-between; align-items: center; color: var(--verde-700); }
+.hoja__marca { font-size: 7px; font-weight: 700; }
+.hoja__titulo { font-size: 13px; color: var(--tinta); margin: 10px 0 8px; }
+.hoja__linea {
+  font-size: 7px;
+  color: var(--texto-suave);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--borde);
+}
+
+.recurso__cuerpo { padding: 18px; }
+.recurso__tipo   { font-size: 8px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--verde-700); }
+.recurso__titulo { font-size: 17px; margin: 6px 0 10px; }
+.recurso__texto  { font-size: 12px; color: var(--texto-suave); margin-bottom: 16px; }
+
+
+/* ---------- 10. ACOMPAÑAMIENTO DOCENTE ---------- */
+.acompanamiento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding: 36px;
+  border-radius: var(--radio-grande);
+  background: var(--verde-900);
+  color: rgba(255, 255, 255, 0.82);
+}
+.acompanamiento .etiqueta { color: rgba(255, 255, 255, 0.7); font-weight: 500; font-size: 9px; }
+.acompanamiento__titulo { color: var(--blanco); font-size: 28px; margin-bottom: 18px; }
+.acompanamiento__texto  { font-size: 13px; margin-bottom: 22px; }
+.acompanamiento .boton--secundario { border: none; }
+
+/* Tarjeta blanca de contacto (dentro de Acompañamiento); texto en el verde del fondo de la sección */
+.contacto {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background: var(--blanco);
+  color: var(--verde-900);
+}
+.contacto__titulo { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.contacto__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.contacto__lista li { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+.contacto__lista .icono { flex-shrink: 0; }
+.contacto__lista a { color: inherit; overflow-wrap: anywhere; }
+.contacto__lista a:hover { text-decoration: underline; }
+
+.pasos-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.pasos-lista li { display: flex; gap: 14px; }
+.pasos-lista__num {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 9px;
+}
+.pasos-lista strong { display: block; color: var(--blanco); font-size: 13px; font-weight: 600; }
+.pasos-lista span   { font-size: 11px; }
+
+
+/* ---------- 11. PIE DE PÁGINA (FOOTER) ---------- */
+.footer { background: var(--footer); color: rgba(255, 255, 255, 0.75); padding: 40px 0 24px; }
+.footer__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.footer__marca { color: var(--blanco); font-size: 19px; margin-bottom: 4px; }
+.footer__datos { font-size: 11px; line-height: 1.8; }
+.footer__menu { display: flex; flex-wrap: wrap; gap: 24px; font-size: 12px; }
+.footer__menu a:hover { color: var(--blanco); }
+.footer__aviso { display: flex; align-items: center; gap: 8px; padding-top: 18px; font-size: 10px; }
+
+
+/* ---------- 12. PÁGINAS INTERNAS ---------- */
+.interna-hero { background: var(--verde-100); padding: 64px 0 56px; }
+.migas { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--texto-suave); margin-bottom: 18px; }
+.migas a { color: var(--verde-700); font-weight: 500; }
+.migas a:hover { text-decoration: underline; }
+/* Casita "Volver al inicio": mismo verde del botón inferior */
+.migas__inicio {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 8px;
+  background: var(--verde-700); color: var(--blanco);
+  transition: background .2s, transform .2s;
+}
+.migas__inicio:hover { background: var(--verde-900); transform: translateY(-1px); text-decoration: none; }
+/* En celulares el encabezado se apila; si tiene la casita, se mantiene en fila (logo a la izquierda, casita a la derecha) */
+@media (max-width: 640px) {
+  .encabezado__interior:has(.migas__inicio) { flex-direction: row; align-items: center; }
+}
+.interna-hero__titulo { font-size: 42px; margin-bottom: 14px; }
+.interna-hero__texto  { max-width: 620px; font-size: 15px; }
+/* Barra decorativa bajo el título: mismo verde del botón "Volver al inicio", llega a la mitad del recuadro punteado */
+.interna-hero__barra  { width: 50%; height: 2mm; background: var(--verde-700); border-radius: 1mm; }
+/* Logo "Soy profe Umanizales y yo..." a la derecha del título (se recorta el borde vacío de la imagen) */
+.interna-hero--con-logo .contenedor { position: relative; }
+.interna-hero__logo {
+  position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+  width: 330px; height: 200px; object-fit: cover; object-position: 50% 55%;
+}
+@media (max-width: 860px) {
+  .interna-hero__logo { display: none; } /* en pantallas angostas no cabe junto al título */
+}
+/* Hero con banner: menos espacio entre la imagen y el borde del recuadro verde */
+.interna-hero--banner { padding: 16px 0; }
+.interna-hero--banner .migas { margin: 12px 0 0; }
+/* Banner + logo "Soy profe" en fila, uno seguido del otro */
+.interna-hero__banners { display: flex; align-items: center; gap: 24px; }
+.interna-hero__banner  { flex: 1 1 auto; min-width: 0; width: 100%; height: auto; border-radius: 8px; display: block; }
+.interna-hero__banners .interna-hero__logo {
+  position: static; transform: none; display: block;
+  flex: 0 0 auto; width: 260px; height: 160px;
+}
+@media (max-width: 860px) {
+  .interna-hero__banners { flex-direction: column; }
+  .interna-hero__banners .interna-hero__logo { width: 220px; height: 135px; }
+}
+/* Texto solo para lectores de pantalla */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.interna-cuerpo { padding: 56px 0 72px; }
+.aviso-construccion {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 24px;
+  border: 1px dashed rgba(13, 92, 70, 0.35);
+  border-radius: var(--radio);
+  background: var(--verde-50);
+}
+.aviso-construccion .tarjeta__icono { flex-shrink: 0; width: 40px; height: 40px; }
+.aviso-construccion h2 { font-size: 18px; margin-bottom: 6px; }
+.aviso-construccion p  { font-size: 14px; margin-bottom: 16px; }
+.aviso-construccion > div { flex: 1; min-width: 0; }
+
+/* Tabla de datos con título (ej.: Tabla 1 de créditos en dedicacion.html) */
+.tabla-contenedor {
+  width: 80%;
+  margin: 0 auto 24px;
+  padding: 10px 12px 12px;
+  border-radius: 8px;
+  background: #F4F4F4;
+}
+.tabla-contenedor figcaption {
+  margin: 0 0 8px 24px;
+  font-size: 13px;
+  font-style: italic;
+  color: #222;
+}
+.tabla-desplazable { overflow-x: auto; }
+.tabla-datos {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--blanco);
+  font-size: 13px;
+  line-height: 1.45;
+  color: #222;
+  text-align: left;
+}
+.tabla-datos th,
+.tabla-datos td {
+  padding: 8px 10px;
+  border: 1px solid #BFBFBF;
+  vertical-align: middle;
+}
+.tabla-datos thead th {
+  background: var(--verde-700); /* mismo verde del botón "Volver al inicio" */
+  color: var(--blanco);
+  font-weight: 700;
+}
+.tabla-datos tbody th { font-weight: 700; }
+.tabla-datos th:nth-child(1) { width: 40%; }
+.tabla-datos :is(th, td):nth-child(2) { width: 14%; white-space: nowrap; }
+/* Variante magenta (Proyección social): encabezado magenta y columnas propias */
+.tabla-datos--proyeccion thead th { background: #a6216f; }
+.tabla-datos--proyeccion th:nth-child(1) { width: 24%; }
+.tabla-datos--proyeccion :is(th, td):nth-child(2) { width: 52%; white-space: normal; }
+/* Variante gris oscuro (Gestión académica) */
+.tabla-datos--gestion thead th { background: #333333; }
+.tabla-datos--gestion th:nth-child(1) { width: 24%; }
+.tabla-datos--gestion :is(th, td):nth-child(2) { width: 46%; white-space: normal; }
+/* Tabla angosta de dos columnas con título y celdas centradas (Tabla 13) */
+.tabla-contenedor--angosta { width: 60%; }
+.tabla-contenedor--angosta figcaption { margin-left: 0; text-align: center; }
+.tabla-datos--centrada :is(th, td) { text-align: center; }
+.tabla-datos--centrada :is(th, td):nth-child(n) { width: 50%; }
+@media (max-width: 640px) {
+  .tabla-contenedor { width: 100%; }
+}
+
+/* Contenido centrado (video, botones, textos); los videos se encogen en pantallas pequeñas */
+.contenido-centrado,
+.interna-cuerpo .contenido-centrado,
+.interna-cuerpo .contenido-centrado p { text-align: center; } /* gana sobre el justificado de .interna-cuerpo p */
+.contenido-centrado iframe {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+/* Página HTML embebida dentro del contenido (ej.: glosario) */
+.marco-embebido {
+  display: block;
+  width: 100%;
+  height: 80vh;
+  margin-bottom: 16px;
+  border: 0;
+  border-radius: var(--radio);
+}
+
+
+
+/* ---------- 13. RESPONSIVE ---------- */
+/* Tabletas */
+@media (max-width: 960px) {
+  .hero__grid { grid-template-columns: 1fr; gap: 32px; } // 
+  .hero__datos { margin-left: 0; }
+  .explorar__grid,
+  .recursos__grid { grid-template-columns: repeat(2, 1fr); }
+  .dimensiones__grid { grid-template-columns: repeat(2, 1fr); }
+  .acompanamiento { grid-template-columns: 1fr; gap: 32px; }
+
+  /* El ciclo pasa a una cuadrícula simple de 2 columnas, en orden 01 → 08 */
+  .ciclo__fila,
+  .ciclo__bajada { display: contents; }
+  .ciclo__flecha,
+  .ciclo__bajada svg { display: none; }
+  .ciclo__pasos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .paso[data-orden="1"] { order: 1; } .paso[data-orden="2"] { order: 2; }
+  .paso[data-orden="3"] { order: 3; } .paso[data-orden="4"] { order: 4; }
+  .paso[data-orden="5"] { order: 5; } .paso[data-orden="6"] { order: 6; }
+  .paso[data-orden="7"] { order: 7; } .paso[data-orden="8"] { order: 8; }
+}
+
+/* Celulares */
+@media (max-width: 640px) {
+  .contenedor { padding: 0 16px; }
+  .seccion { padding: 52px 0; }
+  .encabezado__interior { height: auto; flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 0; }
+  .menu { flex-wrap: wrap; gap: 14px; }
+  .hero__titulo { font-size: 26px; }
+  .titulo-seccion { font-size: 24px; }
+  .explorar__grid,
+  .recursos__grid,
+  .dimensiones__grid,
+  .ciclo__pasos { grid-template-columns: 1fr; }
+  .acompanamiento { padding: 24px; }
+  .footer__top { flex-direction: column; }
+  .interna-hero__titulo { font-size: 32px; }
+}
+
+/* Listas con viñetas en páginas internas */
+.lista {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+.lista li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+/* Viñeta: un punto verde */
+.lista li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.6em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--verde-700);
+}
+
+/* Todos los párrafos del contenido de páginas internas, justificados */
+.interna-cuerpo p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* ===== POPUP DEL PDF ===== */
+.modal-pdf {
+  width: min(960px, 94vw);
+  height: 90vh;
+  padding: 0;
+  border: none;
+  border-radius: var(--radio-grande);
+  overflow: hidden;
+  background: var(--blanco);
+}
+.modal-pdf[open] {
+  display: flex;
+  flex-direction: column;
+}
+.modal-pdf::backdrop {
+  background: rgba(16, 28, 40, 0.6);
+}
+.modal-pdf__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--borde);
+  font-family: var(--fuente);
+  font-size: 0.9rem;
+}
+.modal-pdf__barra a {
+  color: var(--tinta);
+}
+.modal-pdf__cerrar {
+  border: none;
+  background: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--tinta);
+  cursor: pointer;
+}
+.modal-pdf iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+}

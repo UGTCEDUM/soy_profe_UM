@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Glosario de compromisos académicos UM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F6F6; --surface:#FFFFFF; --ink:#16313D; --muted:#566771; --line:#D5DEE0;
+  --doc:#C98A0B; --inv:#2C6A9E; --pro:#2F7F4F; --ges:#7E4596; --tie:#B4462F; --sig:#16313D; --eva:#0F7C82;
+  --focus:#2C6A9E;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47;
+    --doc:#E8B33C; --inv:#6FA9DA; --pro:#6CC08D; --ges:#C08AD6; --tie:#E58A72; --sig:#E6EEF0; --eva:#5CC3C8;
+    --focus:#6FA9DA;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --surface:#16272F; --ink:#E6EEF0; --muted:#9DB0B8; --line:#2A3E47;
+  --doc:#E8B33C; --inv:#6FA9DA; --pro:#6CC08D; --ges:#C08AD6; --tie:#E58A72; --sig:#E6EEF0; --eva:#5CC3C8;
+  --focus:#6FA9DA;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding:2.25rem 1.25rem 4rem}
+h1{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;font-weight:800;font-size:clamp(2rem,6vw,3.25rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 .75rem;max-width:16ch}
+.intro{color:var(--muted);max-width:60ch;margin:0 0 1.75rem}
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:.75rem 0 .9rem;border-bottom:1px solid var(--line)}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.search{flex:1 1 260px;position:relative}
+.search input{width:100%;font:inherit;font-size:1.05rem;padding:.75rem 1rem;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--focus)}
+.mode{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.mode button{font:inherit;font-size:.95rem;border:0;background:transparent;color:var(--ink);padding:.65rem 1rem;cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--ink);color:var(--bg);font-weight:700}
+.chips{margin-top:.75rem;display:flex;gap:.45rem;flex-wrap:wrap}
+.chip{font:inherit;font-size:.9rem;display:inline-flex;align-items:center;gap:.45rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer}
+.chip .dot{width:.65rem;height:.65rem;border-radius:50%;background:var(--c)}
+.chip .n{color:var(--muted);font-size:.8rem}
+.chip[aria-pressed="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1.5px var(--c);font-weight:700}
+button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.count{color:var(--muted);font-size:.9rem;margin:1rem 0 .25rem}
+#list{margin:0}
+.entry{border-bottom:1px solid var(--line)}
+.entry button.head{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:.35rem minmax(0,14rem) 1fr 1.5rem;gap:1rem;align-items:start;padding:1rem .25rem;cursor:pointer}
+.entry button.head:focus-visible{outline:3px solid var(--focus);outline-offset:-3px;border-radius:6px}
+.bar{align-self:stretch;border-radius:3px;background:var(--c)}
+.term{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:1.12rem;line-height:1.25}
+.term .full{display:block;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-weight:400;font-size:.88rem;color:var(--muted);margin-top:.15rem}
+.def{display:block;margin:0;color:var(--ink)}
+.chev{color:var(--muted);transition:transform .2s;justify-self:end;margin-top:.15rem}
+.entry[data-open="true"] .chev{transform:rotate(180deg)}
+.more{display:none;grid-column:3/5;margin:0 0 1rem calc(.35rem + 14rem + 2rem);padding:.75rem 1rem;background:var(--surface);border-left:3px solid var(--c);border-radius:0 8px 8px 0;font-size:.95rem}
+.entry[data-open="true"] .more{display:block}
+.more .tag{font-size:.82rem;color:var(--muted);display:block;margin-top:.4rem}
+mark{background:color-mix(in srgb,var(--doc) 35%,transparent);color:inherit;border-radius:2px}
+.empty{padding:2rem 0;color:var(--muted)}
+.empty button{font:inherit;color:var(--focus);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+/* Tarjetas */
+.cards{display:none;margin-top:1.5rem}
+.cards.on{display:block}
+.list.off{display:none}
+.card{perspective:1400px;max-width:620px;margin:0 auto}
+.card-inner{position:relative;min-height:300px;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;background:var(--surface);border:2px solid var(--line);border-top:10px solid var(--c);padding:2rem 1.75rem;display:flex;flex-direction:column;justify-content:center}
+.face.back{transform:rotateY(180deg)}
+.face .cat{font-size:.85rem;color:var(--muted);margin-bottom:.75rem}
+.face .big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.1}
+.face .hint{margin-top:1.25rem;color:var(--muted);font-size:.9rem}
+.face p{margin:0;font-size:1.08rem}
+.nav{display:flex;justify-content:center;align-items:center;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap}
+.nav button{font:inherit;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:.6rem 1.1rem;cursor:pointer}
+.nav .pos{color:var(--muted);min-width:5.5rem;text-align:center}
+.foot{margin-top:2.5rem;color:var(--muted);font-size:.85rem}
+@media (max-width:640px){
+  .entry button.head{grid-template-columns:.3rem 1fr 1.25rem;gap:.75rem}
+  .entry .def{grid-column:2/3}
+  .entry .bar{grid-row:1/3}
+  .entry .chev{grid-row:1;grid-column:3}
+  .more{margin-left:1.05rem}
+}
+@media (prefers-reduced-motion:reduce){.card-inner,.chev{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Glosario del compromiso académico</h1>
+  <p class="intro">Los términos y siglas que necesitas para leer tu compromiso en la plataforma. Busca una palabra, filtra por tema o repasa con tarjetas.</p>
+
+  <div class="controls">
+    <div class="row">
+      <div class="search">
+        <label for="q" style="position:absolute;left:-9999px">Buscar término</label>
+        <input id="q" type="search" placeholder="Busca un término o una sigla, por ejemplo HCD" autocomplete="off">
+      </div>
+      <div class="mode" role="group" aria-label="Vista">
+        <button id="mList" aria-pressed="true">Lista</button>
+        <button id="mCards" aria-pressed="false">Tarjetas de repaso</button>
+      </div>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por tema"></div>
+  </div>
+
+  <div class="list" id="listView">
+    <p class="count" id="count" aria-live="polite"></p>
+    <div id="list"></div>
+  </div>
+
+  <div class="cards" id="cardView">
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Voltear tarjeta">
+      <div class="card-inner">
+        <div class="face front"><span class="cat" id="fCat"></span><span class="big" id="fTerm"></span><span class="hint">Toca o presiona Enter para ver el significado</span></div>
+        <div class="face back"><span class="cat" id="bTerm"></span><p id="bDef"></p></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button id="prev">Anterior</button>
+      <span class="pos" id="pos"></span>
+      <button id="next">Siguiente</button>
+      <button id="shuffle">Mezclar</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CATS = {
+  siglas:{name:"Siglas", c:"--sig"},
+  tiempo:{name:"Tiempo y dedicación", c:"--tie"},
+  reporte:{name:"El reporte", c:"--muted"},
+  docencia:{name:"Docencia", c:"--doc"},
+  investigacion:{name:"Investigación", c:"--inv"},
+  proyeccion:{name:"Proyección social", c:"--pro"},
+  gestion:{name:"Gestión académica", c:"--ges"},
+  evaluacion:{name:"Evaluación y mejora", c:"--eva"}
+};
+const T = [
+ {t:"HCD",f:"Horas semanales de contacto directo",cat:"siglas",d:"Tiempo en que interactúo o acompaño directamente: una clase, la asesoría de una tesis, la coordinación de una línea.",x:"Dos grupos presenciales de 2 horas semanales suman 4 HCD."},
+ {t:"HCC",f:"Horas semanales complementarias al contacto",cat:"siglas",d:"Tiempo para preparar, evaluar, formarme y aportar a la gestión.",x:"La formación docente mínima equivale a 2 HCC."},
+ {t:"HIA",f:"Horas de interacción académica",cat:"siglas",d:"En la virtualidad, el contacto directo sincrónico y asincrónico en plataforma."},
+ {t:"HTI",f:"Horas de trabajo independiente",cat:"siglas",d:"Tiempo autónomo del estudiante en actividades que el profesor diseña y evalúa."},
+ {t:"SEM",f:"Semestre",cat:"siglas",d:"Semestre del plan de estudios en que se ubica el curso."},
+ {t:"CRE",f:"Créditos",cat:"siglas",d:"Créditos académicos del curso. Cada crédito equivale a 48 horas de trabajo del estudiante."},
+ {t:"CD",f:"Contacto directo",cat:"siglas",d:"Horas de acompañamiento directo del curso según el plan de estudios.",x:"En un curso virtual puede aparecer para todo el periodo (por ejemplo, 24); en uno presencial, por semana (por ejemplo, 2)."},
+ {t:"TI",f:"Trabajo independiente",cat:"siglas",d:"Horas de trabajo autónomo del estudiante según el plan de estudios."},
+ {t:"MOD",f:"Modalidad",cat:"siglas",d:"Presencial, virtual u otra. Define cómo se entiende el contacto directo."},
+
+ {t:"Dedicación",cat:"tiempo",d:"Horas semanales según mi vinculación: 40 en tiempo completo, 20 en medio tiempo y entre 6 y 16 en cátedra.",x:"De esas horas, 18 son de contacto directo en tiempo completo y 12 en medio tiempo."},
+ {t:"Contacto directo",cat:"tiempo",d:"Tiempo de interacción o acompañamiento directo en cualquier función misional. Se registra como HCD."},
+ {t:"Contacto indirecto-complementario",cat:"tiempo",d:"Tiempo de preparación, evaluación, gestión y otras labores que completan la dedicación. Se registra como HCC y vale tanto como el contacto directo."},
+ {t:"Bonificación",cat:"tiempo",d:"Reconocimiento de actividades específicas por fuera de las horas de dedicación. Se suma al total, pero no a la dedicación.",x:"40 horas de dedicación + 6 de bonificación = 46 horas en total."},
+ {t:"Crédito académico",cat:"tiempo",d:"Unidad de trabajo del estudiante: 48 horas entre acompañamiento directo y trabajo independiente."},
+ {t:"Relación de créditos",cat:"tiempo",d:"Proporción entre acompañamiento directo y trabajo independiente.",x:"1 a 2 = 16 horas directas y 32 independientes por crédito; 1 a 3 = 12 y 36."},
+ {t:"Periodo académico",cat:"tiempo",d:"Semanas en que se desarrolla la programación. Para pasar horas semestrales a semanales se divide entre 16.",x:"32 horas semestrales ÷ 16 = 2 horas semanales."},
+ {t:"Horario regular",cat:"tiempo",d:"Horas que se repiten cada semana durante el periodo.",x:"Todos los martes de 7:00 a 9:00."},
+ {t:"Horario irregular",cat:"tiempo",d:"Horas concentradas o modulares en fechas específicas.",x:"Tres sábados del periodo de 8:00 a 11:00."},
+
+ {t:"Compromiso académico",cat:"reporte",d:"Planeación de mi labor en docencia, investigación, proyección social y gestión durante un periodo. No es solo un horario ni un registro de horas trabajadas."},
+ {t:"Concertación",cat:"reporte",d:"Conversación entre el profesor y la dirección de programa o la decanatura para acordar el compromiso. Es un derecho del profesor."},
+ {t:"Proceso misional",cat:"reporte",d:"Cada dimensión de la labor: docencia, investigación, proyección social y gestión académica. Cada una tiene su color en el reporte."},
+ {t:"Categoría en el escalafón",cat:"reporte",d:"Nivel del profesor: Instructor Asistente, Instructor Asociado, Profesor Asistente, Profesor Asociado o Profesor Titular."},
+ {t:"Horas no aprobadas",cat:"reporte",d:"Tiempo de actividades registradas que aún no tienen aprobación."},
+ {t:"Sujeta a estudiantes matriculados",cat:"reporte",d:"Etiqueta que indica que la actividad solo se reconoce si los estudiantes se matriculan.",x:"Frecuente en asesorías de trabajos de grado y tesis de posgrado."},
+ {t:"Estudiantes proyectados",cat:"reporte",d:"Número de estudiantes que se prevé atender en un grupo. Ayuda a estimar el tiempo de preparación y evaluación; puede cambiar al cerrar matrículas."},
+ {t:"Trazabilidad",cat:"reporte",d:"Registro en la plataforma del envío, las consultas y la aceptación del compromiso."},
+ {t:"Aceptación del compromiso",cat:"reporte",d:"Paso en el que reconozco en el reporte las actividades concertadas. Conviene revisarlo con calma antes de aceptarlo."},
+ {t:"Ajuste del compromiso",cat:"reporte",d:"Cambio concertado durante el periodo cuando algo varía.",x:"Un grupo que no se abre o un estudiante de posgrado que no se matricula."},
+
+ {t:"Docencia directa",cat:"docencia",d:"Actividades formativas en contacto directo con los estudiantes, en cualquier nivel y modalidad."},
+ {t:"Planeación y preparación de clase",cat:"docencia",d:"Tiempo para organizar las actividades presenciales, virtuales y de trabajo independiente. Se consigna en el syllabus."},
+ {t:"Evaluación y seguimiento",cat:"docencia",d:"Tiempo para diseñar instrumentos, calificar y retroalimentar a los estudiantes.",x:"Diseñar una rúbrica y retroalimentar un informe."},
+ {t:"Gestión curricular",cat:"docencia",d:"Participación en la mejora del currículo y la evaluación de los programas. Se reconoce como HCC."},
+ {t:"Formación docente",cat:"docencia",d:"Capacitación del profesor: mínimo 32 horas semestrales, equivalentes a 2 horas semanales (HCC)."},
+ {t:"Plan de estudios",cat:"docencia",d:"Conjunto de asignaturas de un programa con sus créditos. Es la base con la que el sistema calcula las horas de docencia."},
+ {t:"Syllabus",cat:"docencia",d:"Documento de planeación del curso: propósitos, resultados de aprendizaje, contenidos, actividades, evaluación y tiempos."},
+ {t:"Pacto pedagógico o guía de actividades",cat:"docencia",d:"Acuerdo con los estudiantes, al inicio del curso, sobre actividades, fechas, criterios de evaluación y momentos de interacción."},
+ {t:"Trabajo independiente",cat:"docencia",d:"Tiempo autónomo del estudiante, guiado por actividades que el profesor diseña, acompaña y evalúa. El trabajo del profesor aquí se reconoce como HCC."},
+ {t:"Interacción sincrónica",cat:"docencia",d:"Interacción en el mismo momento, aunque en lugares distintos. Los encuentros se graban.",x:"Una videoconferencia o un chat en vivo."},
+ {t:"Interacción asincrónica",cat:"docencia",d:"Interacción sin coincidir en el tiempo: foros dinamizados, respuestas y retroalimentación en plataforma. Cuenta como contacto directo. Asincronía no es ausencia.",x:"Un curso virtual con 9 horas sincrónicas y 15 asincrónicas suma 24 horas de contacto directo."},
+
+ {t:"Investigación formativa",cat:"investigacion",d:"Desarrollo de competencias investigativas en pregrado: semilleros, asistencias, pasantías y jóvenes investigadores."},
+ {t:"Formación de alto nivel",cat:"investigacion",d:"Acompañamiento investigativo en maestrías y doctorados, sobre todo con la asesoría de trabajos de grado y tesis.",x:"Tesis doctoral: hasta 2 HCD por tesis, hasta 5 tesis. Maestría: hasta 1 HCD por trabajo, hasta 10."},
+ {t:"Semillero de investigación",cat:"investigacion",d:"Espacio de investigación formativa con estudiantes. Al profesor líder se le reconocen 2 HCD, aunque coordine varios."},
+ {t:"Gestión de la investigación",cat:"investigacion",d:"Roles que coordinan y lideran la investigación: líderes de grupo, coordinadores de línea, directores de centro y editores de revistas.",x:"Coordinador de línea: 4 HCD + 1 HCC semanales."},
+
+ {t:"Proyección social",cat:"proyeccion",d:"Relación de la Universidad con el entorno: educación continuada, prácticas, asesorías y consultorías, y proyectos de desarrollo social. Se reconoce sobre todo como HCC."},
+ {t:"Asesor de prácticas",cat:"proyeccion",d:"Profesor que acompaña, asesora y evalúa al estudiante en su práctica. Se reconocen 12 horas semestrales por estudiante de pregrado.",x:"Tres estudiantes = 36 horas semestrales = 2,25 HCD semanales."},
+
+ {t:"Gestión académica",cat:"gestion",d:"Actividades que crean condiciones para las demás funciones: calidad, comisiones, representaciones y permiso sindical."},
+ {t:"Comisión",cat:"gestion",d:"Dedicación temporal a un cargo de coordinación, dirección o encargo administrativo. Ocupa toda la vinculación y no se pierde la condición de académico."},
+
+ {t:"Evaluación docente 360°",cat:"evaluacion",d:"Evaluación que combina estudiantes (50 %), jefe inmediato (25 %) y autoevaluación (25 %). Su enfoque es formativo."},
+ {t:"Plan de mejora y mantenimiento",cat:"evaluacion",d:"Plan que formulo a partir de mi evaluación para sostener fortalezas (mantenimiento) o fortalecer aspectos (mejora), con apoyo de mi jefe inmediato.",x:"Evidencia posible: un syllabus actualizado o un horario de asesoría publicado."}
+];
+
+const $ = s => document.querySelector(s);
+let active = "all", query = "", deck = [], idx = 0;
+
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function hl(text){
+  if(!query) return esc(text);
+  const n = norm(text), q = norm(query); let out="", i=0, p;
+  while((p = n.indexOf(q,i)) !== -1){ out += esc(text.slice(i,p)) + "<mark>" + esc(text.slice(p,p+q.length)) + "</mark>"; i = p+q.length; }
+  return out + esc(text.slice(i));
+}
+function filtered(){
+  const q = norm(query);
+  return T.filter(e => (active==="all"||e.cat===active) &&
+    (!q || norm(e.t+" "+(e.f||"")+" "+e.d+" "+(e.x||"")).includes(q)));
+}
+
+function renderChips(){
+  const all = [["all",{name:"Todos",c:"--ink"}], ...Object.entries(CATS)];
+  $("#chips").innerHTML = all.map(([k,v]) => {
+    const n = k==="all" ? T.length : T.filter(e=>e.cat===k).length;
+    return `<button class="chip" data-k="${k}" style="--c:var(${v.c})" aria-pressed="${active===k}"><span class="dot"></span>${v.name} <span class="n">${n}</span></button>`;
+  }).join("");
+  $("#chips").querySelectorAll(".chip").forEach(b => b.onclick = () => { active = b.dataset.k; renderChips(); render(); });
+}
+
+function render(){
+  const items = filtered();
+  $("#count").textContent = items.length === 1 ? "1 término" : `${items.length} términos`;
+  if(!items.length){
+    $("#list").innerHTML = `<div class="empty">No hay términos que coincidan con “${esc(query)}”. <button id="clr">Ver todos los términos</button></div>`;
+    $("#clr").onclick = () => { query=""; active="all"; $("#q").value=""; renderChips(); render(); };
+  } else {
+    $("#list").innerHTML = items.map((e,i) => `
+      <div class="entry" style="--c:var(${CATS[e.cat].c})" data-open="false">
+        <button class="head" aria-expanded="false" ${e.x?"":"data-nomore"}>
+          <span class="bar"></span>
+          <span class="term">${hl(e.t)}${e.f?`<span class="full">${hl(e.f)}</span>`:""}</span>
+          <span class="def">${hl(e.d)}</span>
+          <span class="chev" aria-hidden="true">${e.x?"▾":""}</span>
+        </button>
+        ${e.x?`<div class="more"><strong>Ejemplo:</strong> ${hl(e.x)}<span class="tag">${CATS[e.cat].name}</span></div>`:""}
+      </div>`).join("");
+    $("#list").querySelectorAll(".entry").forEach(el => {
+      const b = el.querySelector(".head");
+      if(b.hasAttribute("data-nomore")){ b.style.cursor="default"; b.tabIndex=-1; return; }
+      b.onclick = () => { const o = el.dataset.open!=="true"; el.dataset.open=o; b.setAttribute("aria-expanded",o); };
+    });
+  }
+  deck = items.slice(); idx = 0; renderCard();
+}
+
+function renderCard(){
+  const card = $("#card"); card.classList.remove("flipped");
+  if(!deck.length){ $("#fTerm").textContent="Sin términos"; $("#fCat").textContent=""; $("#bDef").textContent=""; $("#pos").textContent="0 de 0"; return; }
+  const e = deck[idx];
+  card.style.setProperty("--c",`var(${CATS[e.cat].c})`);
+  $("#fCat").textContent = CATS[e.cat].name;
+  $("#fTerm").textContent = e.t;
+  $("#bTerm").textContent = e.t + (e.f ? " · " + e.f : "");
+  $("#bDef").textContent = e.d + (e.x ? " Ejemplo: " + e.x : "");
+  $("#pos").textContent = `${idx+1} de ${deck.length}`;
+}
+
+$("#q").addEventListener("input", ev => { query = ev.target.value.trim(); render(); });
+$("#card").addEventListener("click", () => $("#card").classList.toggle("flipped"));
+$("#card").addEventListener("keydown", ev => { if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); $("#card").classList.toggle("flipped"); }});
+$("#next").onclick = () => { if(deck.length){ idx=(idx+1)%deck.length; renderCard(); } };
+$("#prev").onclick = () => { if(deck.length){ idx=(idx-1+deck.length)%deck.length; renderCard(); } };
+$("#shuffle").onclick = () => { for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]];} idx=0; renderCard(); };
+function setMode(cards){
+  $("#mList").setAttribute("aria-pressed",!cards); $("#mCards").setAttribute("aria-pressed",cards);
+  $("#listView").classList.toggle("off",cards); $("#cardView").classList.toggle("on",cards);
+}
+$("#mList").onclick = () => setMode(false);
+$("#mCards").onclick = () => setMode(true);
+
+renderChips(); render();
+</script>
+</body>
+</html>
